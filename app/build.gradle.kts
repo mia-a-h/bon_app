@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
+    // Apply the Google Services plugin
+    id("com.google.gms.google-services") version "4.3.15" // Ensure this version is up-to-date
 }
 
 android {
@@ -51,8 +53,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    implementation ("androidx.room:room-runtime:2.6.1")
-    kapt ("androidx.room:room-compiler:2.6.1")
-    implementation ("androidx.room:room-ktx:2.6.1")
-    implementation (libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Firebase BoM (Bill of Materials) to manage Firebase library versions
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1")) // Use the latest BoM version
+
+    // Add Firebase dependencies without specifying versions (managed by BoM)
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
+
+
 }
+
+apply(plugin = "com.google.gms.google-services")
