@@ -1,4 +1,4 @@
-package com.example.recipe_app.ui.auth.ui.ui.ui
+package com.example.recipe_app.ui.auth
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
