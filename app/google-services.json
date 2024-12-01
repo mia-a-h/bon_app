@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "78567985538",
+    "project_id": "bonapp-7fecb",
+    "storage_bucket": "bonapp-7fecb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:78567985538:android:627bee002c91d51efbbf9b",
+        "android_client_info": {
+          "package_name": "com.example.recipe_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnOng-2mnyElub1BWeED-N1JEgdnAh8ak"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

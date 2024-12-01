@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
+
 }
 
 android {
@@ -63,5 +64,17 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
     implementation(libs.androidx.recyclerview)
     implementation(libs.glide)
+    implementation(libs.jetbrains.kotlinx.coroutines.android)
+
     kapt(libs.compiler)
+
+    // Firebase BoM (Bill of Materials) to manage Firebase library versions
+    implementation(platform(libs.firebase.bom)) // Use the latest BoM version
+    // Add Firebase dependencies without specifying versions (managed by BoM)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage.ktx)
 }
+
+apply(plugin = "com.google.gms.google-services")

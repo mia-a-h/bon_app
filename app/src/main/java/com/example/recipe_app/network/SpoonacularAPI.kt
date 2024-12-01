@@ -1,5 +1,6 @@
-package com.example.recipe_app.model
+package com.example.recipe_app.network
 
+import com.example.recipe_app.model.SpoonacularRecipeResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -7,8 +8,6 @@ interface SpoonacularApi {
     @GET("recipes/complexSearch")
     suspend fun searchRecipes(
         @Query("query") query: String,
-//        @Query("cuisine") cuisine: String?,
-//        @Query("type") type: String?,
         @Query("number") number: Int = 10,
         @Query("apiKey") apiKey: String
     ): SpoonacularResponse

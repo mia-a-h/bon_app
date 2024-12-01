@@ -1,5 +1,6 @@
-package com.example.recipe_app
+package com.example.recipe_app.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -43,6 +44,8 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
     fun fetchFilteredRecipes(cuisineType: String, mealType: String) {
         viewModelScope.launch {
             val filteredRecipes = repository.getFilteredRecipes(cuisineType, mealType)
+            Log.d("view model function", filteredRecipes.toString())
+            Log.d("view model function", "$cuisineType $mealType")
             _filteredRecipes.postValue(filteredRecipes.value ?: emptyList())
         }
     }
