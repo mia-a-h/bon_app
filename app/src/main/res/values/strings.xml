@@ -3,4 +3,16 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="your_email_here">Your email here</string>
+    <string name="recipe_app" />
+    <string name="yourname_example_com">yourname@example.com</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dashboardfragment">DashboardFragment</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
 </resources>
