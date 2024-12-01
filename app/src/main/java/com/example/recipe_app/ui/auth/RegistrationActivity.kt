@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-
 class RegistrationActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
@@ -50,7 +49,8 @@ class RegistrationActivity : AppCompatActivity() {
                         .addOnFailureListener { e ->
                             Toast.makeText(this, "Failed to create profile: ${e.message}", Toast.LENGTH_LONG).show()
                         }
-                } else {
+                } else
+                {
                     // Registration failed
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                 }

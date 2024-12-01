@@ -1,4 +1,4 @@
-package com.example.recipe_app.ui.auth
+package com.example.recipe_app.ui
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView

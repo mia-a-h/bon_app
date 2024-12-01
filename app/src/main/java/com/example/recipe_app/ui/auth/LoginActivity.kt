@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipe_app.R
+import com.example.recipe_app.ui.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -17,7 +18,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etEmail: EditText
     private lateinit var etpassword: EditText
     private lateinit var tvForgotPassword: TextView
+    private lateinit var createtxt: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -26,6 +29,8 @@ class LoginActivity : AppCompatActivity() {
         etEmail = findViewById(R.id.etEmail)
         etpassword = findViewById(R.id.etpassword)
         tvForgotPassword = findViewById(R.id.tvForgotPassword)
+        createtxt=findViewById(R.id.Create)
+
         loginbtn.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etpassword.text.toString().trim()
@@ -35,6 +40,11 @@ class LoginActivity : AppCompatActivity() {
         tvForgotPassword.setOnClickListener {
             // Redirect to PasswordRecoveryActivity
             startActivity(Intent(this, PasswordRecoveryActivity::class.java))
+        }
+
+        createtxt.setOnClickListener{
+            //redirect to registration
+            startActivity(Intent(this, RegistrationActivity::class.java))
         }
     }
 
