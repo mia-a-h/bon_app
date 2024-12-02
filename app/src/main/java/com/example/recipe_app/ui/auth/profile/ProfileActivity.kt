@@ -1,4 +1,3 @@
-// File: ProfileActivity.kt
 package com.example.recipe_app.ui.auth.profile
 
 import android.net.Uri
@@ -17,7 +16,7 @@ class ProfileActivity : AppCompatActivity() {
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
     private val storage = FirebaseStorage.getInstance()
-    private var profileImageUri: Uri? = null // Assume this is set via an image picker
+    private var profileImageUri: Uri? = null // later i will do it with an image picker
     private lateinit var etName: EditText
     private lateinit var etContactInfo: EditText
     private lateinit var updateProfilebtn: Button
@@ -34,7 +33,7 @@ class ProfileActivity : AppCompatActivity() {
             updateUserProfile(name, contactInfo, profileImageUri)
         }
 
-        // Implement image picker to set profileImageUri
+        // hon l image picker
     }
 
     private fun updateUserProfile(name: String, contactInfo: String, profileImageUri: Uri?) {

@@ -23,8 +23,8 @@ class LoginActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         auth = FirebaseAuth.getInstance()
+        //instance of firebaseauth to handle authentication tasks
         loginbtn = findViewById(R.id.loginbtn)
         etEmail = findViewById(R.id.etEmail)
         etpassword = findViewById(R.id.etpassword)
@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvForgotPassword.setOnClickListener {
-            // Redirect to PasswordRecoveryActivity
+            // Redirect to the password recovery activity
             startActivity(Intent(this, PasswordRecoveryActivity::class.java))
         }
 
