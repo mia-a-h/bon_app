@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.repository.IRecipeRepository
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
@@ -25,10 +26,12 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
 
     fun fetchRecommendedRecipes() {
         viewModelScope.launch {
-            // Fetch recommended recipes from your API (use different query or API endpoint)
+            // Fetch recommended recipes from the API
             val recipes = repository.fetchRecipesFromApi()
             _recommendedRecipes.postValue(recipes)
+            Log.d("Recipes", "Fetched recommended recipes: $recipes")
             recipes.forEach { saveRecipe(it) }
+            saveRecipesFirebase(recipes)
         }
     }
 
@@ -37,7 +40,9 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
             // Fetch popular recipes from your API (use different query or API endpoint)
             val recipes = repository.fetchRecipesFromApi()
             _popularRecipes.postValue(recipes)
+            Log.d("Recipes", "Fetched popular recipes: $recipes")
             recipes.forEach { saveRecipe(it) }
+            saveRecipesFirebase(recipes)
         }
     }
 
@@ -50,6 +55,13 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
         }
     }
 
+    fun fetchFilteredRecipesFireBase(cuisine: String?, mealType: String?) {
+        viewModelScope.launch {
+            val recipes = repository.fetchRecipesFromFirebase(cuisine, mealType)
+            _filteredRecipes.postValue(recipes)
+        }
+    }
+
     fun searchRecipes(query: String){
         viewModelScope.launch {
             val recipes = repository.searchRecipesFromApi(query)
@@ -57,7 +69,7 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
         }
     }
 
-    fun saveRecipe(recipe: Recipe) {
+    private fun saveRecipe(recipe: Recipe) {
         viewModelScope.launch {
             repository.saveRecipe(recipe)
         }
@@ -66,4 +78,12 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
     fun getSavedRecipes(): LiveData<List<Recipe>> {
         return repository.getSavedRecipes()
     }
+
+    fun saveRecipesFirebase(recipes: List<Recipe>){
+        viewModelScope.launch {
+            repository.saveRecipesToFirebase(recipes)
+        }
+    }
+
+
 }

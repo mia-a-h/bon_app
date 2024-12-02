@@ -16,8 +16,21 @@ data class Recipe(
     val cuisine: String?,
     val mealType: String?,
     val instructions: List<String>?,
-    val image: String?, // URL for the recipe image
-    val time: Int?, // Adjusted to an integer (e.g., minutes) as Spoonacular provides `readyInMinutes`
+    val image: String?, //URL for the recipe image
+    val time: Int?,
     val dietaryPreferences: String?,
     val dietaryRestrictions: List<String>?
-)
+) {
+    // Firebase requires a no-argument constructor for deserialization
+    constructor() : this(
+        id = 0,
+        name = "",
+        cuisine = null,
+        mealType = null,
+        instructions = null,
+        image = null,
+        time = null,
+        dietaryPreferences = null,
+        dietaryRestrictions = null
+    )
+}

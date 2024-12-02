@@ -19,13 +19,7 @@ interface RecipeDao {
     @Delete
     suspend fun deleteRecipe(recipe: Recipe)
 
-    @Query("""
-    SELECT * FROM recipes
-    WHERE 
-        (:cuisineType = 'All' OR LOWER(cuisine) LIKE '%' || LOWER(:cuisineType) || '%')
-    AND 
-        (:mealType = 'All' OR LOWER(mealType) LIKE '%' || LOWER(:mealType) || '%')
-""")
+    @Query("""SELECT * FROM recipes WHERE (:cuisineType = 'All' OR LOWER(cuisine) LIKE '%' || LOWER(:cuisineType) || '%')
+    AND (:mealType = 'All' OR LOWER(mealType) LIKE '%' || LOWER(:mealType) || '%')""")
     fun getRecipesByFilter(cuisineType: String, mealType: String): LiveData<List<Recipe>>
-
 }

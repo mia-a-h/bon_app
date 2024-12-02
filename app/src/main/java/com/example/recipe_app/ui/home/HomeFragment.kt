@@ -9,44 +9,44 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.recipe_app.model.DatabaseProvider
-import com.example.recipe_app.RecipeAdapter
-import com.example.recipe_app.RecipeViewModel
-import com.example.recipe_app.RecipeViewModelFactory
+import com.example.recipe_app.dbprovider.RecipeDatabase
+import com.example.recipe_app.adapter.RecipeAdapter
+import com.example.recipe_app.viewmodels.RecipeViewModel
+import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.databinding.FragmentHomeBinding
-import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.repository.RecipeRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-
+    private var searchJob: Job? = null
     private val binding get() = _binding!!
 
     private val recipeViewModel: RecipeViewModel by viewModels {
         val applicationContext = requireContext().applicationContext // Ensure it's non-null
-        RecipeViewModelFactory(RecipeRepository(DatabaseProvider.getDatabase(applicationContext).recipeDao()))
+        RecipeViewModelFactory(RecipeRepository(RecipeDatabase.getDatabase(applicationContext).recipeDao()))
     }
-    //private lateinit var recipeViewModel: RecipeViewModel
     private lateinit var recommendedAdapter: RecipeAdapter
     private lateinit var popularAdapter: RecipeAdapter
     private lateinit var filterAdapter: RecipeAdapter
     private lateinit var searchAdapter: RecipeAdapter
-
-    //private lateinit var recipeList: MutableList<Recipe>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.titleSearchResults.visibility = View.GONE
         binding.recyclerViewSearchResults.visibility = View.GONE
-        //recipeViewModel = ViewModelProvider(this).get(RecipeViewModel::class.java)
+
         recommendedAdapter = RecipeAdapter(emptyList())
         popularAdapter = RecipeAdapter(emptyList())
         filterAdapter = RecipeAdapter(emptyList())
@@ -72,16 +72,10 @@ class HomeFragment : Fragment() {
 
         recipeViewModel.searchedRecipes.observe(viewLifecycleOwner) { searchResults ->
             if (searchResults.isNotEmpty()) {
-                binding.titleSearchResults.visibility = View.VISIBLE
-                binding.recyclerViewSearchResults.visibility = View.VISIBLE
-                binding.recyclerViewRecommended.visibility = View.GONE
-                binding.recyclerViewPopular.visibility = View.GONE
                 searchAdapter.updateData(searchResults)
+                showSearchResults()
             } else {
-                binding.titleSearchResults.visibility = View.GONE
-                binding.recyclerViewSearchResults.visibility = View.GONE
-                binding.recyclerViewRecommended.visibility = View.VISIBLE
-                binding.recyclerViewPopular.visibility = View.VISIBLE
+                showDefaultViews()
                 Toast.makeText(requireContext(), "No results found", Toast.LENGTH_LONG).show()
             }
         }
@@ -94,6 +88,7 @@ class HomeFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedCuisine = parent?.getItemAtPosition(position).toString()
                 val selectedMeal = binding.spinnerMealType.selectedItem.toString()
+                Log.d("home fragment function", selectedCuisine)
                 recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
             }
 
@@ -104,6 +99,7 @@ class HomeFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedMeal = parent?.getItemAtPosition(position).toString()
                 val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString()
+                Log.d("home fragment function", selectedMeal)
                 recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
             }
 
@@ -113,25 +109,29 @@ class HomeFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
-                    // Trigger search in ViewModel
-                    Log.d("Search", "Search submitted: $it")
-                    recipeViewModel.searchRecipes(query = it)
-                    // Optionally clear focus after search
-                    binding.searchView.clearFocus()
-                    binding.titleSearchResults.visibility = View.VISIBLE
-                    binding.recyclerViewSearchResults.visibility = View.VISIBLE
-                    binding.recyclerViewRecommended.visibility = View.GONE
-                    binding.recyclerViewPopular.visibility = View.GONE
+                    if (searchAdapter.itemCount > 0) {
+                        // If there are already results, no need to re-trigger the search
+                        binding.searchView.clearFocus()
+                    } else {
+                        Log.d("Search", "Search submitted: $it")
+                        recipeViewModel.searchRecipes(query = it)
+                    }
                 }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let {
-                    if (it.isNotBlank()) {
-                        Log.d("Search", "Query changed: $it")
-                        // Live updates as user types
-                        recipeViewModel.searchRecipes(query = it)
+                searchJob?.cancel()
+
+                newText?.let { query ->
+                    searchJob = CoroutineScope(Dispatchers.Main).launch {
+                        delay(500) // Wait for 500ms before executing the search
+                        if (query.isNotBlank()) {
+                            Log.d("Search", "Query changed: $query")
+                            recipeViewModel.searchRecipes(query = query)
+                        } else {
+                            showDefaultViews()
+                        }
                     }
                 }
                 return true
@@ -140,12 +140,36 @@ class HomeFragment : Fragment() {
 
 
         recipeViewModel.filteredRecipes.observe(viewLifecycleOwner) { filteredRecipes ->
+            Log.d("updating...", filteredRecipes.toString())
+            Log.d("HomeFragment", "Filtered recipes: $filteredRecipes")
             recommendedAdapter.updateData(filteredRecipes)
             popularAdapter.updateData(filteredRecipes) // Or use separate logic if you want different filters for popular recipes
         }
 
 
         return binding.root
+    }
+
+    private fun showDefaultViews(){
+        _binding?.let { binding ->
+            binding.titleSearchResults.visibility = View.GONE
+            binding.recyclerViewSearchResults.visibility = View.GONE
+            binding.titleRecommended.visibility = View.VISIBLE
+            binding.recyclerViewRecommended.visibility = View.VISIBLE
+            binding.titlePopular.visibility = View.VISIBLE
+            binding.recyclerViewPopular.visibility = View.VISIBLE
+        } ?: Log.e("HomeFragment", "Default Views: Binding is null")
+    }
+
+    private fun showSearchResults(){
+        _binding?.let { binding -> // Use the non-null binding here
+            binding.titleSearchResults.visibility = View.VISIBLE
+            binding.recyclerViewSearchResults.visibility = View.VISIBLE
+            binding.titleRecommended.visibility = View.GONE
+            binding.recyclerViewRecommended.visibility = View.GONE
+            binding.titlePopular.visibility = View.GONE
+            binding.recyclerViewPopular.visibility = View.GONE
+        } ?: Log.e("HomeFragment", "Search Results: Binding is null")
     }
 
     override fun onDestroyView() {

@@ -5,6 +5,7 @@ firebaseBom = "33.6.0"
 firebaseFirestore = "25.1.1"
 glide = "4.15.1"
 googleServices = "4.4.2"
+gradle = "8.0.2"
 kotlin = "1.9.0"
 coreKtx = "1.15.0"
 junit = "4.13.2"
@@ -39,6 +40,7 @@ firebase-firestore-ktx = { module = "com.google.firebase:firebase-firestore-ktx"
 firebase-storage-ktx = { module = "com.google.firebase:firebase-storage-ktx" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 google-services = { module = "com.google.gms:google-services", version.ref = "googleServices" }
+gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
 jetbrains-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

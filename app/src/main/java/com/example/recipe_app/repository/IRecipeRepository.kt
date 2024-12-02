@@ -8,6 +8,9 @@ interface IRecipeRepository {
     suspend fun fetchRecipesFromApi(): List<Recipe>
     suspend fun searchRecipesFromApi(query: String): List<Recipe>
     suspend fun saveRecipe(recipe: Recipe)
+    suspend fun saveRecipesToFirebase(recipes: List<Recipe>)
     fun getSavedRecipes(): LiveData<List<Recipe>>
     fun getFilteredRecipes(cuisineType: String, mealType: String): LiveData<List<Recipe>>
+    fun getRecipesFromFirebase(): LiveData<List<Recipe>>
+    suspend fun fetchRecipesFromFirebase(cuisine: String?, mealType: String?): List<Recipe>
 }

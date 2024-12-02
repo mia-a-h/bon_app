@@ -25,7 +25,7 @@ class RecipeAdapter(private var recipes: List<Recipe>) : RecyclerView.Adapter<Re
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        val recipe = recipes[position]
+        val recipe = recipes[position]  //which recipe i'm on
         holder.recipeName.text = recipe.name
         holder.cuisineTag.text = recipe.cuisine
         holder.mealTypeTag.text = recipe.mealType

@@ -26,6 +26,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "API_KEY", "\"9b31a6de51e34ce89699ac0e7ac03199\"")
+        }
+        debug {
+            buildConfigField("String", "API_KEY", "\"9b31a6de51e34ce89699ac0e7ac03199\"")
         }
     }
     compileOptions {
@@ -37,6 +41,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -57,8 +62,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     kapt(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
-    //implementation(libs.retrofit)
-    //implementation(libs.converter.gson)
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.converter.gson)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v261)
@@ -68,9 +71,9 @@ dependencies {
 
     kapt(libs.compiler)
 
-    // Firebase BoM (Bill of Materials) to manage Firebase library versions
-    implementation(platform(libs.firebase.bom)) // Use the latest BoM version
-    // Add Firebase dependencies without specifying versions (managed by BoM)
+    //Firebase BoM (Bill of Materials) to manage Firebase library versions
+    implementation(platform(libs.firebase.bom))
+    //Add Firebase dependencies without specifying versions (managed by BoM)
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.firebase.firestore)

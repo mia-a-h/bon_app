@@ -11,5 +11,6 @@ buildscript {
     dependencies {
         // Add the Google services classpath
         classpath(libs.google.services) // or latest version
+        classpath(libs.gradle)
     }
 }
