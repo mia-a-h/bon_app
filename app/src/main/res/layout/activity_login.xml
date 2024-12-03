@@ -42,10 +42,9 @@
         android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="@+id/nav_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.637" />
+        app:layout_constraintVertical_bias="0.666" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -56,10 +55,9 @@
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/loginbtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.508" />
+        app:layout_constraintVertical_bias="0.686" />
 
     <EditText
         android:id="@+id/etpassword"
@@ -70,10 +68,9 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toTopOf="@+id/loginbtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etEmail"
-        app:layout_constraintVertical_bias="0.436" />
+        app:layout_constraintVertical_bias="0.642" />
 
     <TextView
         android:id="@+id/tvForgotPassword"
@@ -112,8 +109,8 @@
 
     <TextView
         android:id="@+id/lgntitle"
-        android:layout_width="170dp"
-        android:layout_height="99dp"
+        android:layout_width="168dp"
+        android:layout_height="54dp"
         android:shadowColor="#A9A9A9"
         android:shadowDx="2"
         android:shadowDy="2"
@@ -124,22 +121,20 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/etEmail"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.334"
+        app:layout_constraintHorizontal_bias="0.251"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.341" />
+        app:layout_constraintVertical_bias="0.26" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="184dp"
-        android:layout_height="237dp"
-        android:layout_marginStart="164dp"
+        android:layout_width="236dp"
+        android:layout_height="217dp"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etpassword"
         app:layout_constraintStart_toStartOf="@+id/lgntitle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/avoca" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
