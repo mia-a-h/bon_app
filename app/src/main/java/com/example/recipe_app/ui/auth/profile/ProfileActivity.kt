@@ -20,6 +20,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var etName: EditText
     private lateinit var etContactInfo: EditText
     private lateinit var updateProfilebtn: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)

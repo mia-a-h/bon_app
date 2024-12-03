@@ -22,4 +22,9 @@
     <string name="your_feedback_helps_us_make_this_app_better">Your feedback helps us make this app better.</string>
     <string name="tell_us_anything">Tell us anything</string>
     <string name="submit">Submit</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
