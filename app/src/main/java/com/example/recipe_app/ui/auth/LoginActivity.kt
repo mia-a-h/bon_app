@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         tvForgotPassword.setOnClickListener {
-            // Redirect to the password recovery activity
+            // redirect to the password recovery activity
             startActivity(Intent(this, PasswordRecoveryActivity::class.java))
         }
 

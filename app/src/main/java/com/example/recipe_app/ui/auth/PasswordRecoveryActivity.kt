@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipe_app.R
@@ -14,7 +15,7 @@ class PasswordRecoveryActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var email: EditText
     private lateinit var resetbtn: Button
-
+    private lateinit var backbtn: ImageView
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,7 @@ class PasswordRecoveryActivity : AppCompatActivity() {
         // Initialize views
         resetbtn = findViewById(R.id.btnResetPassword)
         email = findViewById(R.id.email)
-
+        backbtn=findViewById(R.id.ivBackButton)
         // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
@@ -35,6 +36,9 @@ class PasswordRecoveryActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter your email address.", Toast.LENGTH_SHORT).show()
             }
+        }
+        backbtn.setOnClickListener {
+            finish()
         }
     }
 

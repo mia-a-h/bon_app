@@ -19,4 +19,7 @@
     <string name="enter_your_email_address_to_receive_a_password_reset_link">Enter your email address to receive a password reset link.</string>
     <string name="password_recovery">Password Recovery</string>
     <string name="update">Update</string>
+    <string name="your_feedback_helps_us_make_this_app_better">Your feedback helps us make this app better.</string>
+    <string name="tell_us_anything">Tell us anything</string>
+    <string name="submit">Submit</string>
 </resources>

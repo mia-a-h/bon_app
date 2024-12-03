@@ -30,6 +30,6 @@ class AdminDashboardActivity : AppCompatActivity() {
     }
 
     private fun showAdminFeatures() {
-        // Implement admin-specific UI components and functionalities
+
     }
 }

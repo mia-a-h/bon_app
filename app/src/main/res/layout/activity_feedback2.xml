@@ -11,22 +11,51 @@
         android:id="@+id/btnSubmitFeedback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:text="@string/submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.674" />
+        app:layout_constraintVertical_bias="0.926" />
 
     <TextView
         android:id="@+id/etFeedback"
-        android:layout_width="160dp"
-        android:layout_height="100dp"
-        android:text="TextView"
+        android:layout_width="261dp"
+        android:layout_height="163dp"
+        android:text="@string/tell_us_anything"
         app:layout_constraintBottom_toTopOf="@+id/btnSubmitFeedback"
         app:layout_constraintEnd_toEndOf="@+id/btnSubmitFeedback"
-        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="@+id/btnSubmitFeedback"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.753" />
+        app:layout_constraintVertical_bias="0.887" />
+
+    <ImageView
+        android:id="@+id/homemadelogo"
+        android:layout_width="263dp"
+        android:layout_height="259dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/homemade" />
+
+    <TextView
+        android:id="@+id/titletxt"
+        android:layout_width="287dp"
+        android:layout_height="96dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="40dp"
+        android:textSize="23sp"
+        android:shadowColor="#A9A9A9"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:textStyle="bold"
+        android:shadowRadius="4"
+        android:text="@string/your_feedback_helps_us_make_this_app_better"
+        app:layout_constraintBottom_toTopOf="@+id/etFeedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

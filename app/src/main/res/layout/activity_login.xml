@@ -133,7 +133,7 @@
         android:id="@+id/imageView3"
         android:layout_width="184dp"
         android:layout_height="237dp"
-        android:layout_marginStart="148dp"
+        android:layout_marginStart="164dp"
         android:layout_marginTop="4dp"
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/etpassword"
