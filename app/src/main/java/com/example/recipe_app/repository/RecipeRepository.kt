@@ -16,10 +16,12 @@ import kotlinx.coroutines.tasks.await
 class RecipeRepository(private val recipeDao: RecipeDao) : IRecipeRepository {
 
     // Fetch recipes from the API
-    override suspend fun fetchRecipesFromApi(): List<Recipe> {
+    override suspend fun fetchRecipesFromApi(tags: String?): List<Recipe> {
         try {
+            //val tagsString = tags?.joinToString(",")
             val apiResponse = RetrofitClient.api.getRandomRecipes(
-                apiKey = Constants.API_KEY
+                apiKey = Constants.API_KEY,
+                tags = tags
             )
             return apiResponse.recipes.map { mapToLocalRecipe(it) } // Map API data to local Recipe class
         } catch (e: Exception){

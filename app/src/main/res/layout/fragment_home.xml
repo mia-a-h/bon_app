@@ -12,7 +12,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="0dp" />
+        android:layout_marginHorizontal="9dp"
+        android:background="@drawable/searchbar_bg"
+        android:elevation="8dp"
+        android:layout_marginTop="16dp"
+        />
 
     <LinearLayout
         android:id="@+id/filterContainer"
@@ -30,7 +34,9 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:entries="@array/cuisine_types"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+            android:paddingEnd="8dp"/>
 
         <Spinner
             android:id="@+id/spinnerMealType"
@@ -38,7 +44,9 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:entries="@array/meal_types"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:drawableEnd="@drawable/baseline_arrow_drop_down_24"
+            android:paddingEnd="8dp"/>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -78,7 +86,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:scrollbars="horizontal" />
+                android:scrollbars="none" />
 
             <TextView
                 android:id="@+id/titlePopular"
@@ -103,7 +111,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                android:scrollbars="horizontal" />
+                android:scrollbars="none" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
@@ -118,7 +126,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filterContainer" /> <!-- Depend on meal spinner or another fixed item -->
+        app:layout_constraintTop_toBottomOf="@id/searchView" /> <!-- Depend on meal spinner or another fixed item -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResults"

@@ -81,15 +81,16 @@ class HomeFragment : Fragment() {
         }
 
         // Fetch recommended and popular recipes
-        recipeViewModel.fetchRecommendedRecipes()
-        recipeViewModel.fetchPopularRecipes()
+        recipeViewModel.fetchRecommendedRecipes(null)
+        recipeViewModel.fetchPopularRecipes(null)
 
         binding.spinnerCuisineType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCuisine = parent?.getItemAtPosition(position).toString()
-                val selectedMeal = binding.spinnerMealType.selectedItem.toString()
-                Log.d("home fragment function", selectedCuisine)
-                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
+//                val selectedCuisine = parent?.getItemAtPosition(position).toString()
+//                val selectedMeal = binding.spinnerMealType.selectedItem.toString()
+//                Log.d("home fragment function", selectedCuisine)
+//                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
+                updateSectionsBasedOnFilters()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -97,10 +98,11 @@ class HomeFragment : Fragment() {
 
         binding.spinnerMealType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedMeal = parent?.getItemAtPosition(position).toString()
-                val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString()
-                Log.d("home fragment function", selectedMeal)
-                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
+//                val selectedMeal = parent?.getItemAtPosition(position).toString()
+//                val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString()
+//                Log.d("home fragment function", selectedMeal)
+//                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
+                updateSectionsBasedOnFilters()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -150,6 +152,21 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private fun updateSectionsBasedOnFilters() {
+        val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString().lowercase()
+        val selectedMealType = binding.spinnerMealType.selectedItem.toString().lowercase()
+        Log.d("filters", "$selectedCuisine, $selectedMealType")
+        // Create tags string: combine non-null filters separated by commas
+        val tags = listOfNotNull(
+            if (selectedCuisine != "all") selectedCuisine else null,
+            if (selectedMealType != "all") selectedMealType else null
+        ).joinToString(",")
+        Log.d("tags", tags)
+        // Fetch Recipes with the combined tags
+        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
+    }
+
     private fun showDefaultViews(){
         _binding?.let { binding ->
             binding.titleSearchResults.visibility = View.GONE
@@ -158,6 +175,8 @@ class HomeFragment : Fragment() {
             binding.recyclerViewRecommended.visibility = View.VISIBLE
             binding.titlePopular.visibility = View.VISIBLE
             binding.recyclerViewPopular.visibility = View.VISIBLE
+            binding.spinnerCuisineType.visibility = View.VISIBLE
+            binding.spinnerMealType.visibility = View.VISIBLE
         } ?: Log.e("HomeFragment", "Default Views: Binding is null")
     }
 
@@ -169,6 +188,8 @@ class HomeFragment : Fragment() {
             binding.recyclerViewRecommended.visibility = View.GONE
             binding.titlePopular.visibility = View.GONE
             binding.recyclerViewPopular.visibility = View.GONE
+            binding.spinnerCuisineType.visibility = View.GONE
+            binding.spinnerMealType.visibility = View.GONE
         } ?: Log.e("HomeFragment", "Search Results: Binding is null")
     }
 

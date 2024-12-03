@@ -5,7 +5,7 @@ import com.example.recipe_app.model.Recipe
 import retrofit2.http.Query
 
 interface IRecipeRepository {
-    suspend fun fetchRecipesFromApi(): List<Recipe>
+    suspend fun fetchRecipesFromApi(tags: String?): List<Recipe>
     suspend fun searchRecipesFromApi(query: String): List<Recipe>
     suspend fun saveRecipe(recipe: Recipe)
     suspend fun saveRecipesToFirebase(recipes: List<Recipe>)

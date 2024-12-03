@@ -24,10 +24,10 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
     private val _searchedRecipes = MutableLiveData<List<Recipe>>()
     val searchedRecipes: LiveData<List<Recipe>> get() = _searchedRecipes
 
-    fun fetchRecommendedRecipes() {
+    fun fetchRecommendedRecipes(tags: String?) {
         viewModelScope.launch {
             // Fetch recommended recipes from the API
-            val recipes = repository.fetchRecipesFromApi()
+            val recipes = repository.fetchRecipesFromApi(tags)
             _recommendedRecipes.postValue(recipes)
             Log.d("Recipes", "Fetched recommended recipes: $recipes")
             recipes.forEach { saveRecipe(it) }
@@ -35,10 +35,10 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
         }
     }
 
-    fun fetchPopularRecipes() {
+    fun fetchPopularRecipes(tags: String?) {
         viewModelScope.launch {
             // Fetch popular recipes from your API (use different query or API endpoint)
-            val recipes = repository.fetchRecipesFromApi()
+            val recipes = repository.fetchRecipesFromApi(tags)
             _popularRecipes.postValue(recipes)
             Log.d("Recipes", "Fetched popular recipes: $recipes")
             recipes.forEach { saveRecipe(it) }
