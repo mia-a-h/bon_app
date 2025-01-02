@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import com.example.recipe_app.Constants
 import com.example.recipe_app.network.RetrofitClient
 import com.example.recipe_app.utils.mapToLocalRecipe
+import com.example.recipe_app.utils.mapToLocalSub
+import com.example.recipe_app.utils.mapSearchToLocalRecipe
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.dao.RecipeDao
+import com.example.recipe_app.model.IngredientSub
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -18,7 +21,6 @@ class RecipeRepository(private val recipeDao: RecipeDao) : IRecipeRepository {
     // Fetch recipes from the API
     override suspend fun fetchRecipesFromApi(tags: String?): List<Recipe> {
         try {
-            //val tagsString = tags?.joinToString(",")
             val apiResponse = RetrofitClient.api.getRandomRecipes(
                 apiKey = Constants.API_KEY,
                 tags = tags
@@ -37,12 +39,27 @@ class RecipeRepository(private val recipeDao: RecipeDao) : IRecipeRepository {
                 query = query,
                 apiKey = Constants.API_KEY
             )
-            return apiResponse.results.map { mapToLocalRecipe(it) }
+            Log.d("RecipeRepository", "Raw API Response: $apiResponse")
+            return apiResponse.results.map { mapSearchToLocalRecipe(it) }
         } catch (e: Exception) {
             Log.e("RecipeRepository", "Error fetching recipes: ${e.message}")
             return emptyList()
         }
     }
+
+    override suspend fun fetchSubstitutes(ingredient: String): List<IngredientSub> {
+         try {
+            val apiResponse = RetrofitClient.api.getIngredientSubs(
+                ingredient = ingredient,
+                apiKey = Constants.API_KEY
+            )
+            return apiResponse.substitutes.map { mapToLocalSub(it) }
+        } catch (e: Exception) {
+            Log.e("RecipeRepository", "Error fetching substitutes", e)
+            return emptyList()
+        }
+    }
+
 
     override fun getFilteredRecipes(cuisineType: String, mealType: String): LiveData<List<Recipe>>{
         return if (cuisineType == "All" && mealType == "All") {
@@ -81,8 +98,6 @@ class RecipeRepository(private val recipeDao: RecipeDao) : IRecipeRepository {
 
         return recipesList
     }
-
-
 
     // Save recipe locally
     override suspend fun saveRecipe(recipe: Recipe) {

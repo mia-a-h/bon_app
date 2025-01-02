@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.recipe_app.R
 import com.example.recipe_app.model.Recipe
 
-class RecipeAdapter(private var recipes: List<Recipe>) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
+class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClicked: (Recipe) -> Unit) : RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>() {
 
     inner class RecipeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recipeName: TextView = itemView.findViewById(R.id.recipe_name)
@@ -34,6 +34,10 @@ class RecipeAdapter(private var recipes: List<Recipe>) : RecyclerView.Adapter<Re
             .load(recipe.image)
             .placeholder(R.drawable.ic_sample_image)
             .into(holder.image)
+
+        holder.itemView.setOnClickListener {
+            onItemClicked(recipe)
+        }
     }
 
     override fun getItemCount() = recipes.size
@@ -42,4 +46,5 @@ class RecipeAdapter(private var recipes: List<Recipe>) : RecyclerView.Adapter<Re
         recipes = newRecipes
         notifyDataSetChanged()  // Notify the adapter that the data has changed
     }
+
 }

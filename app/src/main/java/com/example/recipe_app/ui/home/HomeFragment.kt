@@ -8,13 +8,17 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.recipe_app.R
 import com.example.recipe_app.dbprovider.RecipeDatabase
 import com.example.recipe_app.adapter.RecipeAdapter
 import com.example.recipe_app.viewmodels.RecipeViewModel
 import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.databinding.FragmentHomeBinding
+import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.repository.RecipeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,17 +29,29 @@ import kotlinx.coroutines.delay
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private var searchJob: Job? = null
     private val binding get() = _binding!!
 
     private val recipeViewModel: RecipeViewModel by viewModels {
         val applicationContext = requireContext().applicationContext // Ensure it's non-null
-        RecipeViewModelFactory(RecipeRepository(RecipeDatabase.getDatabase(applicationContext).recipeDao()))
+        RecipeViewModelFactory(
+            RecipeRepository(RecipeDatabase.getDatabase(applicationContext).recipeDao())
+        )
     }
+
+    private val sharedViewModel: SharedRecipeViewModel by activityViewModels()
+
+    private fun navigateToRecipeDetails(recipe: Recipe) {
+        sharedViewModel.selectRecipe(recipe) // Set the selected recipe in the ViewModel
+        findNavController().navigate(R.id.action_homeFragment_to_recipeDetailsFragment)
+    }
+
+
     private lateinit var recommendedAdapter: RecipeAdapter
     private lateinit var popularAdapter: RecipeAdapter
-    private lateinit var filterAdapter: RecipeAdapter
     private lateinit var searchAdapter: RecipeAdapter
+    //private lateinit var adapter: RecipeAdapter
+
+    private var searchJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,20 +63,49 @@ class HomeFragment : Fragment() {
         binding.titleSearchResults.visibility = View.GONE
         binding.recyclerViewSearchResults.visibility = View.GONE
 
-        recommendedAdapter = RecipeAdapter(emptyList())
-        popularAdapter = RecipeAdapter(emptyList())
-        filterAdapter = RecipeAdapter(emptyList())
-        searchAdapter = RecipeAdapter(emptyList())
+        initAdapters()
+        initRecyclerViews()
+        initObservers()
 
-        binding.recyclerViewRecommended.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewRecommended.adapter = recommendedAdapter
+        fetchInitialRecipes()
 
-        binding.recyclerViewPopular.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewPopular.adapter = popularAdapter
+        initSpinners()
 
-        binding.recyclerViewSearchResults.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        binding.recyclerViewSearchResults.adapter = searchAdapter
+        initSearchView()
 
+        return binding.root
+    }
+
+    private fun initAdapters(){
+        recommendedAdapter = RecipeAdapter(emptyList()) { recipe ->
+            navigateToRecipeDetails(recipe)
+        }
+        popularAdapter = RecipeAdapter(emptyList()) { recipe ->
+            navigateToRecipeDetails(recipe)
+        }
+        searchAdapter = RecipeAdapter(emptyList()) { recipe ->
+            navigateToRecipeDetails(recipe)
+        }
+    }
+
+    private fun initRecyclerViews() {
+        binding.recyclerViewRecommended.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = recommendedAdapter
+        }
+
+        binding.recyclerViewPopular.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = popularAdapter
+        }
+
+        binding.recyclerViewSearchResults.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            adapter = searchAdapter
+        }
+    }
+
+    private fun initObservers(){
         // Observe the LiveData from your ViewModel and update the adapters
         recipeViewModel.recommendedRecipes.observe(viewLifecycleOwner) { recommendedRecipes ->
             recommendedAdapter.updateData(recommendedRecipes)
@@ -79,35 +124,49 @@ class HomeFragment : Fragment() {
                 Toast.makeText(requireContext(), "No results found", Toast.LENGTH_LONG).show()
             }
         }
+    }
 
+    private fun fetchInitialRecipes(){
         // Fetch recommended and popular recipes
         recipeViewModel.fetchRecommendedRecipes(null)
         recipeViewModel.fetchPopularRecipes(null)
+    }
 
-        binding.spinnerCuisineType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+    private fun initSpinners() {
+        binding.spinnerCuisineType.onItemSelectedListener = createFilterListener()
+        binding.spinnerMealType.onItemSelectedListener = createFilterListener()
+    }
+
+    private fun createFilterListener(): AdapterView.OnItemSelectedListener {
+        return object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                val selectedCuisine = parent?.getItemAtPosition(position).toString()
-//                val selectedMeal = binding.spinnerMealType.selectedItem.toString()
-//                Log.d("home fragment function", selectedCuisine)
-//                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
                 updateSectionsBasedOnFilters()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
 
-        binding.spinnerMealType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-//                val selectedMeal = parent?.getItemAtPosition(position).toString()
-//                val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString()
-//                Log.d("home fragment function", selectedMeal)
-//                recipeViewModel.fetchFilteredRecipes(selectedCuisine, selectedMeal)
-                updateSectionsBasedOnFilters()
-            }
+    private fun updateSectionsBasedOnFilters() {
+        val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString().lowercase()
+        val selectedMealType = binding.spinnerMealType.selectedItem.toString().lowercase()
+        Log.d("filters", "$selectedCuisine, $selectedMealType")
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+        // Create tags string: combine non-null filters separated by commas
+//        val tags = listOfNotNull(
+//            if (selectedCuisine != "all") selectedCuisine else null,
+//            if (selectedMealType != "all") selectedMealType else null
+//        ).joinToString(",")
 
+        val tags = listOf(selectedCuisine, selectedMealType).joinToString(",")
+
+        Log.d("tags", tags)
+        // Fetch Recipes with the combined tags
+        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
+    }
+
+    private fun initSearchView(){
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -139,32 +198,6 @@ class HomeFragment : Fragment() {
                 return true
             }
         })
-
-
-        recipeViewModel.filteredRecipes.observe(viewLifecycleOwner) { filteredRecipes ->
-            Log.d("updating...", filteredRecipes.toString())
-            Log.d("HomeFragment", "Filtered recipes: $filteredRecipes")
-            recommendedAdapter.updateData(filteredRecipes)
-            popularAdapter.updateData(filteredRecipes) // Or use separate logic if you want different filters for popular recipes
-        }
-
-
-        return binding.root
-    }
-
-    private fun updateSectionsBasedOnFilters() {
-        val selectedCuisine = binding.spinnerCuisineType.selectedItem.toString().lowercase()
-        val selectedMealType = binding.spinnerMealType.selectedItem.toString().lowercase()
-        Log.d("filters", "$selectedCuisine, $selectedMealType")
-        // Create tags string: combine non-null filters separated by commas
-        val tags = listOfNotNull(
-            if (selectedCuisine != "all") selectedCuisine else null,
-            if (selectedMealType != "all") selectedMealType else null
-        ).joinToString(",")
-        Log.d("tags", tags)
-        // Fetch Recipes with the combined tags
-        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
-        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
     }
 
     private fun showDefaultViews(){
