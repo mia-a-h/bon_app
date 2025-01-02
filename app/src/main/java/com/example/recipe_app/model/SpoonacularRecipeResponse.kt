@@ -24,7 +24,6 @@ data class Step(
     val step: String  // The step description (e.g., "Mix flour and melted butter with a beater.")
 )
 
-
 data class ExtendedIngredient(
     val nameClean: String?, //ingredient name
     val amount: Double?

@@ -21,7 +21,6 @@
         <item>Dinner</item>
         <item>Snack</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
@@ -132,4 +131,28 @@
     <string name="generate_shopping_list">generate shopping list</string>
     <string name="generated_shopping_list">Generated Shopping List</string>
 
+    <string name="title_activity_registration">RegistrationActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="your_email_here">Your email here</string>
+    <string name="recipe_app" />
+    <string name="yourname_example_com">yourname@example.com</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dashboardfragment">DashboardFragment</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
+    <string name="don_t_have_an_account">Don\'t have an account?</string>
+    <string name="register">Register</string>
+    <string name="enter_your_email_address_to_receive_a_password_reset_link">Enter your email address to receive a password reset link.</string>
+    <string name="password_recovery">Password Recovery</string>
+    <string name="update">Update</string>
+    <string name="your_feedback_helps_us_make_this_app_better">Your feedback helps us make this app better.</string>
+    <string name="tell_us_anything">Tell us anything</string>
+    <string name="submit">Submit</string>
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>
