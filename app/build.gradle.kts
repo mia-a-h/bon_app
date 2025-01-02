@@ -53,7 +53,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-
     implementation(libs.androidx.adapters)
     implementation(libs.androidx.legacy.support.v4)
     implementation(libs.androidx.fragment.ktx)
@@ -83,6 +82,10 @@ dependencies {
     implementation(libs.jsoup.jsoup)
 //    implementation(libs.androidx.navigation.fragment.ktx.v273)
 //    implementation(libs.androidx.navigation.ui.ktx.v273)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Firebase BoM (Bill of Materials) to manage Firebase library versions
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1")) // Use the latest BoM version
 
 }
 
