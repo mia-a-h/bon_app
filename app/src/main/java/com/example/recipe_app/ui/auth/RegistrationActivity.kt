@@ -99,7 +99,7 @@ class RegistrationActivity : AppCompatActivity() {
                         .set(userProfile)
                         .addOnSuccessListener {
                             Toast.makeText(this, "Registration successful!", Toast.LENGTH_LONG).show()
-                            // Redirect to main app or login
+                            // rdct to main app or login
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(this, "Failed to create profile: ${e.message}", Toast.LENGTH_LONG).show()

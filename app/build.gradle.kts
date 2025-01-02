@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     kotlin("kapt")
     // Apply the Google Services plugin
-    id("com.google.gms.google-services") version "4.3.15" // Ensure this version is up-to-date
+    id("com.google.gms.google-services") version "4.4.2" // Ensure this version is up-to-date
 }
 
 android {
@@ -58,14 +58,18 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
     // Firebase BoM (Bill of Materials) to manage Firebase library versions
-    implementation(platform("com.google.firebase:firebase-bom:32.1.1")) // Use the latest BoM version
+    implementation(platform(libs.firebase.bom)) // Use the latest BoM version
 
     // Add Firebase dependencies without specifying versions (managed by BoM)
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
-    implementation ("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.storage.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx.v251)
+    implementation (libs.androidx.lifecycle.livedata.ktx.v251)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
 
 
 }

@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipe_app.R
 import com.example.recipe_app.ui.MainActivity
+import com.example.recipe_app.ui.auth.feedback.FeedbackActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
@@ -19,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etpassword: EditText
     private lateinit var tvForgotPassword: TextView
     private lateinit var createtxt: TextView
+    private lateinit var feedbackmsg: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -30,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         etpassword = findViewById(R.id.etpassword)
         tvForgotPassword = findViewById(R.id.tvForgotPassword)
         createtxt=findViewById(R.id.Create)
+        feedbackmsg=findViewById(R.id.ivfdbk)
 
         loginbtn.setOnClickListener {
             val email = etEmail.text.toString().trim()
@@ -45,6 +49,9 @@ class LoginActivity : AppCompatActivity() {
         createtxt.setOnClickListener{
             //redirect to registration
             startActivity(Intent(this, RegistrationActivity::class.java))
+        }
+        feedbackmsg.setOnClickListener{
+            startActivity(Intent(this,FeedbackActivity::class.java))
         }
     }
 

@@ -6,11 +6,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.profile.ProfileActivity">
+    tools:context=".ui.auth.profile.ProfileFragment">
 
-
-
-    <!-- First Name Field -->
+    <!-- Profile Picture -->
     <ImageView
         android:id="@+id/ivProfilePicture"
         android:layout_width="100dp"
@@ -23,8 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_default_profile" />
 
-
-
+    <!-- First Name Field -->
     <EditText
         android:id="@+id/etFirstName"
         android:layout_width="306dp"
@@ -36,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivProfilePicture" />
 
+    <!-- Last Name Field -->
     <EditText
         android:id="@+id/etLastName"
         android:layout_width="306dp"
@@ -47,6 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etFirstName" />
 
+    <!-- Birthday Field -->
     <EditText
         android:id="@+id/etBirthday"
         android:layout_width="303dp"
@@ -59,6 +58,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etLastName" />
 
+    <!-- Gender Field -->
     <Spinner
         android:id="@+id/spinnerGender"
         android:layout_width="298dp"
@@ -69,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etBirthday" />
 
+    <!-- Update Profile Button -->
     <Button
         android:id="@+id/profilebtn"
         android:layout_width="wrap_content"
@@ -79,6 +80,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/spinnerGender"
         android:layout_marginTop="16dp" />
+
+    <!-- Back Button -->
     <ImageView
         android:id="@+id/ivBackButton"
         android:layout_width="33dp"

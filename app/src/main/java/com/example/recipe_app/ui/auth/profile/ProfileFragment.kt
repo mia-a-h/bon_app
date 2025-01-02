@@ -1,12 +1,14 @@
 package com.example.recipe_app.ui.auth.profile
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.recipe_app.R
 import com.google.firebase.auth.FirebaseAuth
@@ -14,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileFragment : Fragment() {
 
     private val auth = FirebaseAuth.getInstance()
     private val firestore = FirebaseFirestore.getInstance()
@@ -27,20 +29,21 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var etBirthday: EditText
     private lateinit var spinnerGender: Spinner
     private lateinit var updateProfilebtn: Button
-    private lateinit var back: ImageView
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Initialize Views
-        ivProfilePicture = findViewById(R.id.ivProfilePicture)
-        etFirstName = findViewById(R.id.etFirstName)
-        etLastName = findViewById(R.id.etLastName)
-        etBirthday = findViewById(R.id.etBirthday)
-        spinnerGender = findViewById(R.id.spinnerGender)
-        updateProfilebtn = findViewById(R.id.profilebtn)
-        back =findViewById(R.id.ivBackButton)
+        ivProfilePicture = view.findViewById(R.id.ivProfilePicture)
+        etFirstName = view.findViewById(R.id.etFirstName)
+        etLastName = view.findViewById(R.id.etLastName)
+        etBirthday = view.findViewById(R.id.etBirthday)
+        spinnerGender = view.findViewById(R.id.spinnerGender)
+        updateProfilebtn = view.findViewById(R.id.profilebtn)
+
         // Set DatePicker for Birthday
         etBirthday.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -49,7 +52,7 @@ class ProfileActivity : AppCompatActivity() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(
-                this,
+                requireContext(),
                 { _, selectedYear, selectedMonth, selectedDay ->
                     val birthday = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                     etBirthday.setText(birthday)
@@ -63,9 +66,7 @@ class ProfileActivity : AppCompatActivity() {
         ivProfilePicture.setOnClickListener {
             selectImage()
         }
-        back.setOnClickListener {
-            finish()
-        }
+
         // Load current user data
         loadUserProfile()
 
@@ -77,16 +78,20 @@ class ProfileActivity : AppCompatActivity() {
             val gender = spinnerGender.selectedItem.toString()
             updateUserProfile(firstName, lastName, birthday, gender, profileImageUri)
         }
+
+        return view
     }
+
+    // The rest of the methods (selectImage, loadUserProfile, updateUserProfile) are similar
+    // Adapt these methods to use `requireContext()` when accessing context
 
     private val imagePickerLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 profileImageUri = it
-                // Load the selected image into the ImageView using Glide
                 Glide.with(this)
                     .load(it)
-                    .placeholder(R.drawable.ic_default_profile) // Default image while loading
+                    .placeholder(R.drawable.ic_default_profile)
                     .into(ivProfilePicture)
             }
         }
@@ -110,16 +115,15 @@ class ProfileActivity : AppCompatActivity() {
                     }
                     val profileImageUrl = document.getString("profileImageUrl")
                     if (!profileImageUrl.isNullOrEmpty()) {
-                        // Load the profile image using Glide
                         Glide.with(this)
                             .load(profileImageUrl)
-                            .placeholder(R.drawable.ic_default_profile) // Default image while loading
+                            .placeholder(R.drawable.ic_default_profile)
                             .into(ivProfilePicture)
                     }
                 }
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to load profile", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Failed to load profile", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -148,23 +152,23 @@ class ProfileActivity : AppCompatActivity() {
                         updates["profileImageUrl"] = uri.toString()
                         userRef.update(updates)
                             .addOnSuccessListener {
-                                Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), "Profile updated successfully!", Toast.LENGTH_LONG).show()
                             }
                             .addOnFailureListener { e ->
-                                Toast.makeText(this, "Failed to update profile: ${e.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(requireContext(), "Failed to update profile: ${e.message}", Toast.LENGTH_LONG).show()
                             }
                     }
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Image upload failed: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Image upload failed: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         } ?: run {
             userRef.update(updates)
                 .addOnSuccessListener {
-                    Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Profile updated successfully!", Toast.LENGTH_LONG).show()
                 }
                 .addOnFailureListener { e ->
-                    Toast.makeText(this, "Failed to update profile: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), "Failed to update profile: ${e.message}", Toast.LENGTH_LONG).show()
                 }
         }
     }

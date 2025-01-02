@@ -18,6 +18,7 @@ class PasswordRecoveryActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var resetbtn: Button
     private lateinit var backbtn: ImageView
+    private lateinit var prfbtn: ImageView
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,7 @@ class PasswordRecoveryActivity : AppCompatActivity() {
         resetbtn = findViewById(R.id.btnResetPassword)
         email = findViewById(R.id.email)
         backbtn=findViewById(R.id.ivBackButton)
+        prfbtn=findViewById(R.id.ivprofilebtn)
         // Initialize FirebaseAuth
         auth = FirebaseAuth.getInstance()
 
@@ -40,8 +42,12 @@ class PasswordRecoveryActivity : AppCompatActivity() {
             }
         }
         backbtn.setOnClickListener {
-          //startActivity(Intent(this, ProfileActivity::class.java))
-         finish()
+//          startActivity(Intent(this, ProfileActivity::class.java))
+        finish()
+        }
+        prfbtn.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+
         }
     }
 
