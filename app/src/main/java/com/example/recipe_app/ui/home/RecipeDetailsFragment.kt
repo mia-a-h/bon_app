@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +22,8 @@ import com.example.recipe_app.adapter.IngredientsAdapter
 import com.example.recipe_app.adapter.InstructionsAdapter
 import com.example.recipe_app.adapter.NutrientAdapter
 import com.example.recipe_app.databinding.FragmentRecipeDetailsBinding
+import com.example.recipe_app.model.Recipe
+import com.example.recipe_app.viewmodels.SavedRecipesViewModel
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -40,6 +43,18 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val savedRecipesViewModel: SavedRecipesViewModel by viewModels()
+        // Add save button observer
+        savedRecipesViewModel.saveStatus.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                Toast.makeText(context, "Recipe saved!", Toast.LENGTH_SHORT).show()
+                binding.favoriteButton.isSelected = true
+            } else {
+                Toast.makeText(context, "Failed to save recipe", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
         // Observe the selectedRecipe LiveData from the shared ViewModel
         sharedViewModel.selectedRecipe.observe(viewLifecycleOwner) { recipe ->
             recipe?.let {
@@ -50,7 +65,10 @@ class RecipeDetailsFragment : Fragment() {
                 binding.cuisineTag.text = it.cuisine
                 binding.mealTypeTag.text= it.mealType
                 binding.totalTime.text = it.time.toString()
-
+                //beep beep
+                binding.favoriteButton.setOnClickListener {
+                    recipe?.let { savedRecipesViewModel.saveRecipe(it) }
+                }
                 binding.apply {
                     // Ingredients RecyclerView
                     ingredientsList.layoutManager = LinearLayoutManager(context)
