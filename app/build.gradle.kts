@@ -85,7 +85,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
     // Firebase BoM (Bill of Materials) to manage Firebase library versions
-    implementation(platform("com.google.firebase:firebase-bom:32.1.1")) // Use the latest BoM version
+    implementation(libs.firebase.bom.v3211) // Use the latest BoM version
+    implementation (libs.retrofit.v290) //for edamam reftrofit
+    implementation (libs.converter.gson.v290)
 
 }
 

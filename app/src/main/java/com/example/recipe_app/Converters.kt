@@ -3,8 +3,11 @@ package com.example.recipe_app
 import androidx.room.TypeConverter
 import com.example.recipe_app.model.AnalyzedInstruction
 import com.example.recipe_app.model.ExtendedIngredient
+import com.example.recipe_app.model.MinMax
 import com.example.recipe_app.model.Nutrient
+import com.example.recipe_app.model.SectionResponse
 import com.example.recipe_app.model.Step
+import com.google.gson.reflect.TypeToken
 import com.google.gson.Gson
 
 class Converters {
@@ -66,4 +69,26 @@ class Converters {
     fun toAnalyzedInstructionList(json: String): List<AnalyzedInstruction> {
         return Gson().fromJson(json, Array<AnalyzedInstruction>::class.java).toList()
     }
-}
+
+
+        @TypeConverter
+        fun fromMapStringMinMax(map: Map<String, MinMax>?): String? {
+            return Gson().toJson(map)
+        }
+
+        @TypeConverter
+        fun toMapStringMinMax(value: String?): Map<String, MinMax>? {
+            return Gson().fromJson(value, object : TypeToken<Map<String, MinMax>>() {}.type)
+        }
+
+        @TypeConverter
+        fun fromMapStringSectionResponse(map: Map<String, SectionResponse>?): String? {
+            return Gson().toJson(map)
+        }
+
+        @TypeConverter
+        fun toMapStringSectionResponse(value: String?): Map<String, SectionResponse>? {
+            return Gson().fromJson(value, object : TypeToken<Map<String, SectionResponse>>() {}.type)
+        }
+    }
+
