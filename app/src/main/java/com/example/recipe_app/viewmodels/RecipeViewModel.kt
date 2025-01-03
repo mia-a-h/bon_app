@@ -27,9 +27,15 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
     val searchedRecipes: LiveData<List<Recipe>> get() = _searchedRecipes
 
     fun fetchRecommendedRecipes(tags: String?) {
-        if (_recommendedRecipes.value.isNullOrEmpty() || (tags != null && staticTag != tags)) {
+        if (_recommendedRecipes.value.isNullOrEmpty() || (staticTag != tags)) {
             viewModelScope.launch {
-                val recipes = repository.fetchRecipesFromApi(tags)
+                val recipes: List<Recipe>
+                if(tags == "all, all"){
+                    recipes = repository.fetchRecipesFromApi(null)
+                }
+                else {
+                    recipes = repository.fetchRecipesFromApi(tags)
+                }
                 _recommendedRecipes.postValue(recipes)
                 Log.d("Recipes", "Fetched recommended recipes: $recipes")
                 //recipes.forEach { saveRecipe(it) }
@@ -38,7 +44,8 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
                 staticTag = tags
                 Log.d("repo", "static tag is: $staticTag")
             }
-        } else {
+        }
+        else {
             Log.d("Recipes", "Recommended recipes already loaded")
         }
     }
@@ -106,11 +113,13 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
             if (!substitutesCache.containsKey(ingredient)) {
                 try {
                     // Fetch the list of IngredientSub objects from the repository
-                    val ingredientSubList = repository.fetchSubstitutes(ingredient)
+                    val ingredientSub = repository.fetchSubstitutes(ingredient)
 
-                    // Process the list and update the cache
-                    ingredientSubList.forEach { ingredientSub ->
-                        substitutesCache[ingredientSub.ingredient] = ingredientSub.substitutes
+                    // Process the substitute and update the cache
+                    ingredientSub?.substitutes?.forEach { _ ->
+                        Log.d("RecipeViewModel", "Before Update: $substitutesCache")
+                        substitutesCache[ingredient] = ingredientSub.substitutes
+                        Log.d("RecipeViewModel", "After Update: $substitutesCache")
                     }
 
                     // Post the updated cache to the LiveData
@@ -121,6 +130,34 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
             }
             else{
                 _substitutes.postValue(substitutesCache)
+            }
+        }
+    }
+
+    private val _joke = MutableLiveData<String?>()
+    val joke: LiveData<String?> get() = _joke
+
+    fun fetchJoke(){
+        viewModelScope.launch {
+            try{
+                val joke = repository.fetchJoke()
+                _joke.postValue(joke)
+            } catch (e: Exception){
+                Log.e("RecipeViewModel", "Failed to fetch joke: ${e.message}")
+            }
+        }
+    }
+
+    private val _trivia = MutableLiveData<String?>()
+    val trivia: LiveData<String?> get() = _trivia
+
+    fun fetchTrivia(){
+        viewModelScope.launch {
+            try{
+                val trivia = repository.fetchTrivia()
+                _trivia.postValue(trivia)
+            } catch (e: Exception){
+                Log.e("RecipeViewModel", "Failed to fetch trivia: ${e.message}")
             }
         }
     }
