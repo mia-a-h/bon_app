@@ -153,17 +153,17 @@ class HomeFragment : Fragment() {
         Log.d("filters", "$selectedCuisine, $selectedMealType")
 
         // Create tags string: combine non-null filters separated by commas
-//        val tags = listOfNotNull(
-//            if (selectedCuisine != "all") selectedCuisine else null,
-//            if (selectedMealType != "all") selectedMealType else null
-//        ).joinToString(",")
-
-        val tags = listOf(selectedCuisine, selectedMealType).joinToString(",")
+        val tags = listOfNotNull(
+            if (selectedCuisine != "all") selectedCuisine else null,
+            if (selectedMealType != "all") selectedMealType else null
+        ).joinToString(",").ifEmpty { "all, all" }
 
         Log.d("tags", tags)
         // Fetch Recipes with the combined tags
-        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
-        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        recipeViewModel.fetchRecommendedRecipes(tags) // Pass null if no filters
+        recipeViewModel.fetchPopularRecipes(tags) // Pass null if no filters
+//        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
+//        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
     }
 
     private fun initSearchView(){
