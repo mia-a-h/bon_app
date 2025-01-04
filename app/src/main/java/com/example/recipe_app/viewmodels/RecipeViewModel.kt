@@ -10,7 +10,8 @@ import com.example.recipe_app.repository.IRecipeRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
-var staticTag: String? = "all, all"
+var staticTagR: String? = "all, all"
+var staticTagP: String? = "all, all"
 
 class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
 
@@ -27,40 +28,51 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
     val searchedRecipes: LiveData<List<Recipe>> get() = _searchedRecipes
 
     fun fetchRecommendedRecipes(tags: String?) {
-        if (_recommendedRecipes.value.isNullOrEmpty() || (staticTag != tags)) {
+        //normalize "All" filter to ensure consistent handling
+        val normalizedTags = if (tags == "all, all") null else tags
+
+        if (_recommendedRecipes.value.isNullOrEmpty() || staticTagR != normalizedTags) {
             viewModelScope.launch {
-                val recipes: List<Recipe>
-                if(tags == "all, all"){
-                    recipes = repository.fetchRecipesFromApi(null)
+                try {
+                    // Fetch recipes based on tags (null for "All")
+                    val recipes = repository.fetchRecipesFromApi(normalizedTags)
+                    _recommendedRecipes.postValue(recipes)
+                    // Log to monitor changes and fetch status
+                    Log.d("Recipes", "Fetched recommended recipes: $recipes")
+                    staticTagR = normalizedTags
+                    Log.d("Repo", "Static tag updated to: $staticTagR")
+                    //recipes.forEach { saveRecipe(it) }
+                    //saveRecipesFirebase(recipes)
+                } catch (e: Exception) {
+                    Log.e("FetchError", "Error fetching recommended recipes: ${e.message}")
                 }
-                else {
-                    recipes = repository.fetchRecipesFromApi(tags)
-                }
-                _recommendedRecipes.postValue(recipes)
-                Log.d("Recipes", "Fetched recommended recipes: $recipes")
-                //recipes.forEach { saveRecipe(it) }
-                //saveRecipesFirebase(recipes)
-                Log.d("repo", "static tag is: $staticTag")
-                staticTag = tags
-                Log.d("repo", "static tag is: $staticTag")
             }
-        }
-        else {
-            Log.d("Recipes", "Recommended recipes already loaded")
+        } else {
+            Log.d("Recipes", "Recommended recipes already loaded. Static tag: $staticTagR")
         }
     }
 
+
     fun fetchPopularRecipes(tags: String?) {
-        if (_popularRecipes.value.isNullOrEmpty()) {
+
+        val normalizedTags = if (tags == "all, all") null else tags
+
+        if (_popularRecipes.value.isNullOrEmpty() || staticTagP != normalizedTags) {
             viewModelScope.launch {
-                val recipes = repository.fetchRecipesFromApi(tags)
-                _popularRecipes.postValue(recipes)
-                Log.d("Recipes", "Fetched popular recipes: $recipes")
-                //recipes.forEach { saveRecipe(it) }
-                //saveRecipesFirebase(recipes)
+                try {
+                    val recipes = repository.fetchRecipesFromApi(tags)
+                    _popularRecipes.postValue(recipes)
+                    Log.d("Recipes", "Fetched popular recipes: $recipes")
+                    staticTagP = normalizedTags
+                    Log.d("Repo", "Static tag updated to: $staticTagP")
+                    //recipes.forEach { saveRecipe(it) }
+                    //saveRecipesFirebase(recipes)
+                } catch (e: Exception) {
+                    Log.e("FetchError", "Error fetching recommended recipes: ${e.message}")
+                }
             }
         } else {
-            Log.d("Recipes", "Popular recipes already loaded")
+            Log.d("Recipes", "Popular recipes already loaded. Static tag: $staticTagP")
         }
     }
 

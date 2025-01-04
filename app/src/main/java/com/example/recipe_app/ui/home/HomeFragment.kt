@@ -135,7 +135,7 @@ class HomeFragment : Fragment() {
     private fun fetchInitialRecipes(){
         // Fetch recommended and popular recipes
         recipeViewModel.fetchRecommendedRecipes(null)
-        //recipeViewModel.fetchPopularRecipes(null)
+        recipeViewModel.fetchPopularRecipes(null)
     }
 
     private fun initSpinners() {
@@ -165,11 +165,10 @@ class HomeFragment : Fragment() {
         ).joinToString(",").ifEmpty { "all, all" }
 
         Log.d("tags", tags)
-        // Fetch Recipes with the combined tags
         recipeViewModel.fetchRecommendedRecipes(tags) // Pass null if no filters
         recipeViewModel.fetchPopularRecipes(tags) // Pass null if no filters
-//        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
-//        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        //recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        //recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
     }
 
     private fun initSearchView(){
