@@ -1,6 +1,6 @@
 package com.example.recipe_app.model
 
-data class SpoonacularRecipeResponse(
+data class SpoonacularSearchResponse(
     val id: Int,
     val title: String,
     val image: String,
@@ -9,7 +9,6 @@ data class SpoonacularRecipeResponse(
     val dishTypes: List<String>,
     val summary: String,
     val analyzedInstructions: List<AnalyzedInstruction>,
-    val extendedIngredients: List<ExtendedIngredient>,
     val nutrition: Nutrition,
     val diets: List<String>,
     val restrictions: List<String>

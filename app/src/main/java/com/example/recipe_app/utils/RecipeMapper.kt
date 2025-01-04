@@ -55,9 +55,3 @@ fun mapToLocalRecipe(apiRecipe: SpoonacularRecipeResponse): Recipe {
         throw e
     }
 }
-
-
-//fun parseInstructions(instructionsHtml: String): List<String>{
-//    val document = Jsoup.parse(instructionsHtml)
-//    return document.select("li").map { it.text() }
-//}
