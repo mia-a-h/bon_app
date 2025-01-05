@@ -1,6 +1,4 @@
 package com.example.recipe_app.model
-
-
 data class EdamamRecipeResponse(
     val label: String?,
     val image: String?,

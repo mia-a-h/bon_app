@@ -3,6 +3,7 @@ import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.recipe_app.model.Recipe
+import java.util.UUID
 
 class RecipeSaveService {
     fun saveRecipe(
@@ -11,9 +12,13 @@ class RecipeSaveService {
         onFailure: () -> Unit
     ) {
         val firestore = FirebaseFirestore.getInstance()
-        // Option A: Use .add(recipe)
-        firestore.collection("recipes")
-            .add(recipe)
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        firestore.collection("users")
+            .document(userId)
+            .collection("saved_recipes")
+            .document(recipe.id.toString())
+            .set(recipe)
             .addOnSuccessListener {
                 onSuccess()
             }
@@ -28,7 +33,11 @@ class RecipeSaveService {
         onFailure: () -> Unit
     ) {
         val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("recipes")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        firestore.collection("users")
+            .document(userId)
+            .collection("saved_recipes")
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val recipes = querySnapshot.toObjects(Recipe::class.java)
@@ -40,3 +49,27 @@ class RecipeSaveService {
             }
     }
 }
+
+
+//    fun saveRecipeForUser(
+//        recipe: Recipe,
+//        userId: String, // Pass the user ID explicitly
+//        onSuccess: () -> Unit,
+//        onFailure: (Exception) -> Unit
+//    ) {
+//        val firestore = FirebaseFirestore.getInstance()
+//
+//        // Save the recipe in the user-specific "saved_recipes" collection
+//        firestore.collection("users")
+//            .document(userId) // Reference the user's document
+//            .collection("saved_recipes") // Reference the "saved_recipes" collection
+//            .document(recipe.id.toString() ?: UUID.randomUUID().toString()) // Use recipe ID or generate one
+//            .set(recipe) // Save the recipe
+//            .addOnSuccessListener { onSuccess() }
+//            .addOnFailureListener { e ->
+//                Log.e("RecipeSaveService", "Failed to save recipe: ${e.message}", e)
+//                onFailure(e)
+//            }
+//    }
+
+

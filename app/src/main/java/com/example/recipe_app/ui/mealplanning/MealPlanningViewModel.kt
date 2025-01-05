@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class MealPlanningViewModel : ViewModel() {
     private val edamamApiService: EdamamApiService = EdamamRetrofitClient.api
-        private val appId = "your_app_id"
-    private val appKey = "your_app_key"
+        private val appId = "app_id"
+    private val appKey = "app_key"
 
     private val _meals = MutableLiveData<List<Recipe>>()
     val meals: LiveData<List<Recipe>> = _meals

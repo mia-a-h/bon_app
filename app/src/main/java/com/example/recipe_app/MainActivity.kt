@@ -38,6 +38,14 @@ class MainActivity : AppCompatActivity() {
 //        )
 //        Log.d("MainActivity", "onCreate started, app bar config")
 //
+        FirebaseAuth.getInstance().signInAnonymously()
+            .addOnSuccessListener {
+                Log.d("Auth", "User signed in anonymously: ${it.user?.uid}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Auth", "Failed to sign in: ${e.message}", e)
+            }
+
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 //        Log.d("MainActivity", "onCreate started, set up")
@@ -105,4 +113,5 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         auth.removeAuthStateListener { }
     }
+
 }

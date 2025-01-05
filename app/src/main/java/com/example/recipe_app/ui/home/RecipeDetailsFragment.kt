@@ -21,6 +21,7 @@ import com.example.recipe_app.adapter.InstructionsAdapter
 import com.example.recipe_app.adapter.NutrientAdapter
 import com.example.recipe_app.databinding.FragmentRecipeDetailsBinding
 import com.example.recipe_app.viewmodels.SavedRecipesViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -53,6 +54,21 @@ class RecipeDetailsFragment : Fragment() {
                 Toast.makeText(context, "Failed to save recipe", Toast.LENGTH_SHORT).show()
             }
         }
+//        binding.favoriteButton.setOnClickListener {
+//            val userId = FirebaseAuth.getInstance().currentUser?.uid
+//
+//            if (userId == null) {
+//                Toast.makeText(context, "User is not logged in", Toast.LENGTH_SHORT).show()
+//                return@setOnClickListener
+//            }
+//
+//            val currentRecipe = sharedViewModel.selectedRecipe.value
+//            if (currentRecipe != null) {
+//                savedRecipesViewModel.saveRecipeForUser(currentRecipe, userId)
+//            } else {
+//                Toast.makeText(context, "No recipe selected", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
         // 2) Observe the selectedRecipe from the shared ViewModel
         sharedViewModel.selectedRecipe.observe(viewLifecycleOwner) { recipe ->

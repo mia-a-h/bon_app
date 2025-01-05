@@ -1,5 +1,6 @@
 package com.example.recipe_app.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -38,4 +39,16 @@ class SavedRecipesViewModel : ViewModel() {
 
         )
     }
+//    fun saveRecipeForUser(recipe: Recipe, userId: String) {
+//        recipeSaveService.saveRecipeForUser(
+//            recipe,
+//            userId,
+//            onSuccess = { _saveStatus.value = true },
+//            onFailure = { e ->
+//                Log.e("SavedRecipesViewModel", "Error saving recipe: ${e.message}", e)
+//                _saveStatus.value = false
+//            }
+//        )
+//    }
+
 }
