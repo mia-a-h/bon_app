@@ -2,7 +2,6 @@ package com.example.recipe_app.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.example.recipe_app.EdamamApiService
 
 object RetrofitClient {
     private const val BASE_URL = "https://api.spoonacular.com/"

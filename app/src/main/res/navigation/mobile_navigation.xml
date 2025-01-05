@@ -13,6 +13,9 @@
        <action
             android:id="@+id/action_homeFragment_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_mealPlanningFragment"
+            app:destination="@id/mealPlanningFragment" />
     </fragment>
 
     <fragment
@@ -42,4 +45,20 @@
         android:name="com.example.recipe_app.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/mealPlanningFragment"
+        android:name="com.example.recipe_app.ui.mealplanning.MealPlanningFragment"
+        android:label="Meal Planning"
+        tools:layout="@layout/fragment_meal_planning" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/edamamRecipeDetailsFragment"
+        android:name="com.example.recipe_app.ui.mealplanning.EdamamRecipeDetailsFragment"
+        android:label="Recipe Details"
+        tools:layout="@layout/fragment_edamam_recipe_details" />
+
+    <action
+        android:id="@+id/action_mealPlanningFragment_to_edamamRecipeDetailsFragment"
+        app:destination="@id/edamamRecipeDetailsFragment" />
 </navigation>

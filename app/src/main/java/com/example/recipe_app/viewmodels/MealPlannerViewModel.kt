@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipe_app.EdamamApiService
+import com.example.recipe_app.network.EdamamApiService
 import com.example.recipe_app.model.*
 import kotlinx.coroutines.launch
 import retrofit2.Response

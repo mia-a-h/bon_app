@@ -80,11 +80,11 @@ class RecipeViewModel(private val repository: IRecipeRepository) : ViewModel() {
         }
     }
 
-    private fun saveRecipe(recipe: Recipe) {
-        viewModelScope.launch {
-            repository.saveRecipe(recipe)
-        }
-    }
+//    private fun saveRecipe(recipe: Recipe) {
+//        viewModelScope.launch {
+//            repository.saveRecipe(recipe)
+//        }
+//    }
 
     fun getSavedRecipes(): LiveData<List<Recipe>> {
         return repository.getSavedRecipes()

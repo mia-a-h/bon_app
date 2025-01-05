@@ -7,7 +7,7 @@ import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.ui.services.RecipeSaveService
 
 class SavedRecipesViewModel : ViewModel() {
-    // Instance of our service that handles Firebase operations
+    // Instance of my service that handles Firebase operations
     private val recipeSaveService = RecipeSaveService()
 
     // MutableLiveData for internal modifications of save status (success/failure)

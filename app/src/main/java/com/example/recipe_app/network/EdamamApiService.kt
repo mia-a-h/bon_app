@@ -1,11 +1,14 @@
-package com.example.recipe_app
+package com.example.recipe_app.network
 
+import com.example.recipe_app.model.EdamamRecipeResponse
 import com.example.recipe_app.model.MealPlanRequest
 import com.example.recipe_app.model.MealPlanResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface EdamamApiService {
@@ -16,4 +19,10 @@ interface EdamamApiService {
         @Query("app_key") appKey: String,
         @Body request: MealPlanRequest
     ): Response<MealPlanResponse>
+    @GET("api/recipes/v2/{id}")
+    suspend fun getRecipeDetails(
+        @Path("id") id: String,
+        @Query("app_id") appId: String,
+        @Query("app_key") appKey: String
+    ): Response<EdamamRecipeResponse>
 }
