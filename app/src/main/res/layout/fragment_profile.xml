@@ -1,85 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
 
-    <!-- Profile Picture -->
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="28dp"
-        android:onClick="selectImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.051"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_default_profile" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <!-- First Name Field -->
-    <EditText
-        android:id="@+id/etFirstName"
-        android:layout_width="306dp"
-        android:layout_height="64dp"
-        android:layout_marginTop="56dp"
-        android:hint="First Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivProfilePicture" />
 
-    <!-- Last Name Field -->
-    <EditText
-        android:id="@+id/etLastName"
-        android:layout_width="306dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="56dp"
-        android:hint="Last Name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etFirstName" />
+            
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="28dp"
+            android:onClick="selectImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_default_profile" />
 
-    <!-- Birthday Field -->
-    <EditText
-        android:id="@+id/etBirthday"
-        android:layout_width="303dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="68dp"
-        android:hint="Birthday"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.527"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etLastName" />
+        <!-- First Name Field -->
+        <EditText
+            android:id="@+id/etFirstName"
+            android:layout_width="306dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="56dp"
+            android:hint="First Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivProfilePicture" />
 
-    <!-- Gender Field -->
-    <Spinner
-        android:id="@+id/spinnerGender"
-        android:layout_width="298dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="56dp"
-        android:entries="@array/gender_options"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etBirthday" />
+        <!-- Last Name Field -->
+        <EditText
+            android:id="@+id/etLastName"
+            android:layout_width="306dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:hint="Last Name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etFirstName" />
 
-    <!-- Update Profile Button -->
-    <Button
-        android:id="@+id/profilebtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/update"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spinnerGender"
-        android:layout_marginTop="16dp" />
+        <!-- Birthday Field -->
+        <EditText
+            android:id="@+id/etBirthday"
+            android:layout_width="306dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="16dp"
+            android:hint="Birthday"
+            android:inputType="date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etLastName" />
+
+
+        <!-- Gender Field -->
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="306dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:entries="@array/gender_options"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/etBirthday" />
 
     <!-- Back Button -->
 <!--    <ImageView-->
@@ -92,4 +82,48 @@
 <!--        app:layout_constraintStart_toStartOf="parent"-->
 <!--        app:srcCompat="@drawable/back" />-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Update Profile Button -->
+        <Button
+            android:id="@+id/profilebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/update"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/spinnerGender" />
+
+        <!-- Show Saved Recipes Button -->
+        <Button
+            android:id="@+id/showSavedRecipesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Show Saved Recipes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profilebtn" />
+
+        <Button
+            android:id="@+id/hideSavedRecipesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hide Saved Recipes"
+            android:visibility="gone" />
+
+
+        <!-- Saved Recipes RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedRecipesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#E0E0E0"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/showSavedRecipesButton" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

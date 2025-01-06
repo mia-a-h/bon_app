@@ -11,7 +11,7 @@ import com.example.recipe_app.dao.RecipeDao
 
 @Entity(tableName = "Recipes")
 data class Recipe(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int? = 0,
     val name: String,
     val cuisine: String?,
     val mealType: String?,

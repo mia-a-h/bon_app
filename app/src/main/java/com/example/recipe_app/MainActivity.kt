@@ -33,11 +33,19 @@ class MainActivity : AppCompatActivity() {
 //
 //        val appBarConfiguration = AppBarConfiguration(
 //            setOf(
-//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile
+//                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_profile, R.id.mealPlanningFragment
 //            )
 //        )
 //        Log.d("MainActivity", "onCreate started, app bar config")
 //
+        FirebaseAuth.getInstance().signInAnonymously()
+            .addOnSuccessListener {
+                Log.d("Auth", "User signed in anonymously: ${it.user?.uid}")
+            }
+            .addOnFailureListener { e ->
+                Log.e("Auth", "Failed to sign in: ${e.message}", e)
+            }
+
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 //        navView.setupWithNavController(navController)
 //        Log.d("MainActivity", "onCreate started, set up")
@@ -62,7 +70,9 @@ class MainActivity : AppCompatActivity() {
 
             val appBarConfiguration = AppBarConfiguration(
                 setOf(
-                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_shoppingList, R.id.navigation_profile
+
+                    R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_shoppingList, R.id.navigation_profile,R.id.mealPlanningFragment
+
                 )
             )
             Log.d("MainActivity", "onCreate started, app bar config")
@@ -105,4 +115,5 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         auth.removeAuthStateListener { }
     }
+
 }

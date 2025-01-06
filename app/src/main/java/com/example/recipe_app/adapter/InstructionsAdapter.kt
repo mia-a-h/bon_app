@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe_app.R
-import com.example.recipe_app.model.AnalyzedInstruction
 import com.example.recipe_app.model.Step
 
 class InstructionsAdapter(private val instructions: List<Step>) : RecyclerView.Adapter<InstructionsAdapter.InstructionViewHolder>() {

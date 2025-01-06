@@ -14,3 +14,14 @@ object RetrofitClient {
             .create(SpoonacularApi::class.java)
     }
 }
+object EdamamRetrofitClient {
+    private const val BASE_URL = "https://api.edamam.com/"
+
+    val api: EdamamApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(EdamamApiService::class.java)
+    }
+}
