@@ -4,7 +4,6 @@ import android.util.Log
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.model.ShoppingList
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
 
@@ -23,7 +22,7 @@ class ShoppingListSaveService {
             "ingredients" to recipe.ingredients.map { ingredient ->
                 mapOf(
                     "name" to ingredient.nameClean,
-                    "quantity" to ingredient.quantity
+                    "amount" to ingredient.amount
                 )
             }
         )
@@ -61,7 +60,10 @@ class ShoppingListSaveService {
 //                    val shoppingList = document.toObject(ShoppingList::class.java)
 //                    shoppingLists.add(shoppingList)
 //                }
-                val shoppingLists = result.documents.mapNotNull { it.toObject(ShoppingList::class.java) }
+                val shoppingLists = result.documents.mapNotNull {
+                    Log.d("ShoppingListFetch", "$it")
+                    it.toObject(ShoppingList::class.java)
+                }
                 cachedShoppingLists = shoppingLists // Cache the result
                 Log.d("ShoppingListFetch", "Fetched shopping list: $shoppingLists")
                 callback(shoppingLists)

@@ -2,7 +2,7 @@ package com.example.recipe_app.ui.auth.admin
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipe_app.R
-import com.example.recipe_app.ui.services.UserService
+import com.example.recipe_app.services.UserService
 import com.google.firebase.auth.FirebaseAuth
 
 

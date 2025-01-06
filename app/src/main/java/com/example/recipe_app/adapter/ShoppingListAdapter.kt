@@ -38,7 +38,7 @@ class ShoppingListAdapter : RecyclerView.Adapter<ShoppingListAdapter.ShoppingLis
             binding.recipeNameTextView.text = shoppingList.recipeId // You can customize this as per your structure
 
             // Bind the ingredients
-            val ingredientsText = shoppingList.ingredients.joinToString("\n") { "${it.name}: ${it.quantity}" }
+            val ingredientsText = shoppingList.ingredients.joinToString("\n") { "${it.name}: ${it.amount}" }
             binding.ingredientsTextView.text = ingredientsText
         }
     }

@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.recipe_app.R
 import com.example.recipe_app.ui.models.Feedback
-import com.example.recipe_app.ui.services.FeedbackServices
+import com.example.recipe_app.services.FeedbackServices
 import com.google.firebase.auth.FirebaseAuth
 
 class FeedbackActivity : AppCompatActivity() {

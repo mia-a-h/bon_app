@@ -20,7 +20,7 @@ fun mapSearchToLocalRecipe(apiRecipe: SpoonacularSearchResponse): Recipe {
     }
 
     val extractedIngredients = apiRecipe.nutrition.ingredients.map { ingredient ->
-        ExtendedIngredient(nameClean = ingredient.name, quantity = ingredient.quantity)
+        ExtendedIngredient(nameClean = ingredient.name, amount = ingredient.amount)
     }
 
     Log.d("mapSearchToLocalRecipe", "ingredients $extractedIngredients")

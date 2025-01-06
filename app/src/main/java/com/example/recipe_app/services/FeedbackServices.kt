@@ -1,4 +1,4 @@
-package com.example.recipe_app.ui.services
+package com.example.recipe_app.services
 
 import com.example.recipe_app.ui.models.Feedback
 import com.google.firebase.firestore.FirebaseFirestore
