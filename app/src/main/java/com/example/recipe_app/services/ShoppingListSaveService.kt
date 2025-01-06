@@ -1,14 +1,18 @@
-package com.example.recipe_app.ui.services
+package com.example.recipe_app.services
 
 import android.util.Log
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.model.ShoppingList
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 
 class ShoppingListSaveService {
 
     private val db = FirebaseFirestore.getInstance()
+
+    private var cachedShoppingLists: List<ShoppingList>? = null
 
     fun saveShoppingListToFirestore(recipe: Recipe) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
@@ -19,7 +23,7 @@ class ShoppingListSaveService {
             "ingredients" to recipe.ingredients.map { ingredient ->
                 mapOf(
                     "name" to ingredient.nameClean,
-                    "quantity" to ingredient.amount
+                    "quantity" to ingredient.quantity
                 )
             }
         )
@@ -40,17 +44,26 @@ class ShoppingListSaveService {
     }
 
     fun getShoppingListFromFirestore(userId: String, callback: (List<ShoppingList>) -> Unit) {
+        if (cachedShoppingLists != null) {
+            Log.d("ShoppingListFetch", "Fetched shopping list: $cachedShoppingLists")
+            callback(cachedShoppingLists!!)
+            return
+        }
+
         db.collection("users")
             .document(userId)
             .collection("shopping_lists")
             .get()
             .addOnSuccessListener { result ->
-                val shoppingLists = mutableListOf<ShoppingList>()
-                for (document in result) {
-                    // Assuming the shopping list has an id and ingredients field
-                    val shoppingList = document.toObject(ShoppingList::class.java)
-                    shoppingLists.add(shoppingList)
-                }
+//                val shoppingLists = mutableListOf<ShoppingList>()
+//                for (document in result) {
+//                    // Assuming the shopping list has an id and ingredients field
+//                    val shoppingList = document.toObject(ShoppingList::class.java)
+//                    shoppingLists.add(shoppingList)
+//                }
+                val shoppingLists = result.documents.mapNotNull { it.toObject(ShoppingList::class.java) }
+                cachedShoppingLists = shoppingLists // Cache the result
+                Log.d("ShoppingListFetch", "Fetched shopping list: $shoppingLists")
                 callback(shoppingLists)
             }
             .addOnFailureListener { e ->
@@ -70,8 +83,14 @@ class ShoppingListSaveService {
                 Log.d("ShoppingListDelete", "Shopping list deleted successfully.")
             }
             .addOnFailureListener { e ->
-                Log.e("ShoppingListDelete", "Failed to delete shopping list: ${e.message}", e)
+                when (e) {
+                    is FirebaseFirestoreException -> {
+                        Log.e("ShoppingListFetch", "Firestore error: ${e.code} - ${e.message}", e)
+                    }
+                    else -> {
+                        Log.e("ShoppingListFetch", "Unexpected error: ${e.message}", e)
+                    }
+                }
             }
     }
-
 }

@@ -24,7 +24,7 @@ class IngredientsAdapter(private val ingredients: List<ExtendedIngredient>
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
         val ingredient = ingredients[position]
         holder.ingredientName.text = ingredient.nameClean
-        holder.ingredientQuantity.text = ingredient.amount.toString()
+        holder.ingredientQuantity.text = ingredient.quantity.toString()
 
         holder.itemView.setOnClickListener {
             onIngredientClick(position)

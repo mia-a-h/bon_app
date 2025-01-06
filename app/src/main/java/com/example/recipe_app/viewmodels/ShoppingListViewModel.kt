@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.model.ShoppingList
-import com.example.recipe_app.ui.services.ShoppingListSaveService
+import com.example.recipe_app.services.ShoppingListSaveService
 import kotlinx.coroutines.launch
 
 class ShoppingListViewModel : ViewModel() {

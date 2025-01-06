@@ -1,25 +1,43 @@
 <!-- item_shopping_list.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:elevation="4dp"
+    android:radius="8dp"
+    android:background="@drawable/card_border"
+    app:cardCornerRadius="8dp"
+    tools:context=".ui.adapters.ShoppingListAdapter">
 
-    <!-- Recipe name -->
-    <TextView
-        android:id="@+id/recipeNameTextView"
-        android:text="Recipe Name"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground">
 
-    <!-- Ingredients list -->
-    <TextView
-        android:id="@+id/ingredientsTextView"
-        android:text="Ingredients"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <!-- Recipe name -->
+        <TextView
+            android:id="@+id/recipeNameTextView"
+            android:text="Recipe Name"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
 
-</LinearLayout>
+        <!-- Ingredients list -->
+        <TextView
+            android:id="@+id/ingredientsTextView"
+            android:text="Ingredients"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,5 +1,7 @@
 package com.example.recipe_app.model
 
+import com.google.firebase.firestore.PropertyName
+
 data class AnalyzedInstruction(
     val steps: List<Step>  // The list of steps (each step contains number and step description)
 )
@@ -10,9 +12,12 @@ data class Step(
 )
 
 data class ExtendedIngredient(      //for the get random recipes
-    val nameClean: String?, //ingredient name
-    val amount: Double?
-)
+    @PropertyName("name") val nameClean: String? = "", //ingredient name
+    @PropertyName("quantity") val quantity: Double? = 0.0
+) {
+    // Firestore requires a no-argument constructor to deserialize
+    constructor() : this("", 0.0)
+}
 
 data class Nutrition(
     val nutrients: List<Nutrient>, //nutrient details
@@ -26,6 +31,9 @@ data class Nutrient(
 )
 
 data class Ingredient(      //for the search for recipes
-    val name: String,
-    val amount: Double
-)
+    @PropertyName("name") val name: String = "",
+    @PropertyName("quantity") val quantity: Double = 0.0
+) {
+    // Firestore requires a no-argument constructor to deserialize
+    constructor() : this("", 0.0)
+}

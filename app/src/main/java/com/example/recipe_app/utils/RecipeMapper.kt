@@ -22,7 +22,7 @@ fun mapToLocalRecipe(apiRecipe: SpoonacularRecipeResponse): Recipe {
     // Map extendedIngredients to ExtendedIngredient objects, not just names
     val extractedIngredients = apiRecipe.extendedIngredients.map { ingredient ->
         // Assuming ExtendedIngredient is a data class, you can extract the necessary fields here
-        ExtendedIngredient(nameClean = ingredient.nameClean, amount = ingredient.amount)
+        ExtendedIngredient(nameClean = ingredient.nameClean, quantity = ingredient.quantity)
     }
 
     // Ensure extractedNutrients is a list of Nutrient objects
