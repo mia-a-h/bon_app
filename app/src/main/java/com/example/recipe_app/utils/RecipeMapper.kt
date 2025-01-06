@@ -7,7 +7,6 @@ import com.example.recipe_app.model.Nutrient
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.model.SpoonacularRecipeResponse
 import com.example.recipe_app.model.Step
-import org.jsoup.Jsoup
 
 fun mapToLocalRecipe(apiRecipe: SpoonacularRecipeResponse): Recipe {
 
@@ -55,9 +54,3 @@ fun mapToLocalRecipe(apiRecipe: SpoonacularRecipeResponse): Recipe {
         throw e
     }
 }
-
-
-//fun parseInstructions(instructionsHtml: String): List<String>{
-//    val document = Jsoup.parse(instructionsHtml)
-//    return document.select("li").map { it.text() }
-//}

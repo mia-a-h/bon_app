@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -20,6 +23,7 @@ import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.databinding.FragmentHomeBinding
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.repository.RecipeRepository
+import com.example.recipe_app.viewmodels.SharedRecipeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -49,7 +53,6 @@ class HomeFragment : Fragment() {
     private lateinit var recommendedAdapter: RecipeAdapter
     private lateinit var popularAdapter: RecipeAdapter
     private lateinit var searchAdapter: RecipeAdapter
-    //private lateinit var adapter: RecipeAdapter
 
     private var searchJob: Job? = null
 
@@ -72,6 +75,10 @@ class HomeFragment : Fragment() {
         initSpinners()
 
         initSearchView()
+
+        binding.jokeButton.setOnClickListener{
+            handleButtonClick()
+        }
 
         return binding.root
     }
@@ -153,17 +160,16 @@ class HomeFragment : Fragment() {
         Log.d("filters", "$selectedCuisine, $selectedMealType")
 
         // Create tags string: combine non-null filters separated by commas
-//        val tags = listOfNotNull(
-//            if (selectedCuisine != "all") selectedCuisine else null,
-//            if (selectedMealType != "all") selectedMealType else null
-//        ).joinToString(",")
-
-        val tags = listOf(selectedCuisine, selectedMealType).joinToString(",")
+        val tags = listOfNotNull(
+            if (selectedCuisine != "all") selectedCuisine else null,
+            if (selectedMealType != "all") selectedMealType else null
+        ).joinToString(",").ifEmpty { "all, all" }
 
         Log.d("tags", tags)
-        // Fetch Recipes with the combined tags
-        recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
-        recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        recipeViewModel.fetchRecommendedRecipes(tags) // Pass null if no filters
+        recipeViewModel.fetchPopularRecipes(tags) // Pass null if no filters
+        //recipeViewModel.fetchRecommendedRecipes(tags.ifEmpty { null }) // Pass null if no filters
+        //recipeViewModel.fetchPopularRecipes(tags.ifEmpty { null }) // Pass null if no filters
     }
 
     private fun initSearchView(){
@@ -210,6 +216,8 @@ class HomeFragment : Fragment() {
             binding.recyclerViewPopular.visibility = View.VISIBLE
             binding.spinnerCuisineType.visibility = View.VISIBLE
             binding.spinnerMealType.visibility = View.VISIBLE
+            binding.joke.visibility = View.VISIBLE
+            binding.jokeButton.visibility = View.VISIBLE
         } ?: Log.e("HomeFragment", "Default Views: Binding is null")
     }
 
@@ -223,7 +231,35 @@ class HomeFragment : Fragment() {
             binding.recyclerViewPopular.visibility = View.GONE
             binding.spinnerCuisineType.visibility = View.GONE
             binding.spinnerMealType.visibility = View.GONE
+            binding.joke.visibility = View.GONE
+            binding.jokeButton.visibility = View.GONE
         } ?: Log.e("HomeFragment", "Search Results: Binding is null")
+    }
+
+    private fun handleButtonClick(){
+        recipeViewModel.fetchJoke()
+        val dialogView = layoutInflater.inflate(R.layout.joke_trivia_dialog, null)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        val jokeTextView: TextView = dialogView.findViewById(R.id.jktrText)
+        // Observe the joke LiveData to update the TextView
+        recipeViewModel.joke.observe(viewLifecycleOwner) { joke ->
+            if (joke != null) {
+                jokeTextView.text = joke
+            } else {
+                jokeTextView.text = "Couldn't fetch a joke. Please try again!"
+            }
+        }
+
+        val closeButton: Button = dialogView.findViewById(R.id.closeButton)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     override fun onDestroyView() {
