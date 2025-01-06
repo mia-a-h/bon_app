@@ -9,6 +9,7 @@ import com.example.recipe_app.model.Recipe
 
 class MealPlanAdapter(
     private var meals: List<Recipe> = emptyList(),
+
     /*A list of Recipe objects (representing meals). This is the data source for the adapter.
     b, it’s l awwal it's an empty list (emptyList()).*/
     private val onMealClick: (Recipe) -> Unit /*A higher-order function lambda passed as a parameter to handle what happens when a meal is clicked.*/
@@ -18,13 +19,27 @@ class MealPlanAdapter(
     class MealViewHolder(
         private val binding: ItemMealPlanBinding, /* provides easy access to the views in the layout.*/
         private val onMealClick: (Recipe) -> Unit //unit mtl void
+
+    private val onMealClick: (Recipe) -> Unit
+) : RecyclerView.Adapter<MealPlanAdapter.MealViewHolder>() {
+
+    class MealViewHolder(
+        private val binding: ItemMealPlanBinding,
+        private val onMealClick: (Recipe) -> Unit
+
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(recipe: Recipe) {
             binding.apply {
+
                 mealTitle.text = recipe.name //sets the meal title name
                 mealType.text = recipe.mealType //sets the type eza dinner or lunch
                 cookingTime.text = "${recipe.time} min" //sets the time
+
+                mealTitle.text = recipe.name
+                mealType.text = recipe.mealType
+                cookingTime.text = "${recipe.time} min"
+
 
                 Glide.with(root.context)
                     .load(recipe.image)
@@ -32,8 +47,10 @@ class MealPlanAdapter(
                     .into(mealImage)
 
                 root.setOnClickListener { onMealClick(recipe) }
+
                 /*Adds a click listener to the entire row.
                 When clicked, it calls the onMealClick lambda, passing the clicked Recipe object.*/
+
             }
         }
     }

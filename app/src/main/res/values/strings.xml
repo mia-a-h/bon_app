@@ -163,4 +163,64 @@
         <item>Female</item>
         <item>Other</item>
     </string-array>
+
+    <!-- Meals per Day Options -->
+    <string-array name="meals_per_day_options">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <!-- Allergies Options -->
+    <string-array name="allergies_options">
+        <item>Gluten</item>
+        <item>Dairy</item>
+        <item>Peanut</item>
+        <item>Seafood</item>
+        <item>Sesame</item>
+        <item>Egg</item>
+        <item>Soy</item>
+        <item>Sulfite</item>
+        <item>Tree Nut</item>
+        <item>Wheat</item>
+    </string-array>
+
+    <!-- Diets Options -->
+    <string-array name="diets_options">
+        <item>Balanced</item>
+        <item>High-Protein</item>
+        <item>Low-Fat</item>
+        <item>Low-Carb</item>
+        <item>Vegan</item>
+        <item>Vegetarian</item>
+        <item>Paleo</item>
+        <item>Keto</item>
+    </string-array>
+
+    <!-- Calorie Min Options -->
+    <string-array name="calorie_min_options">
+        <item>1000</item>
+        <item>1200</item>
+        <item>1400</item>
+        <item>1600</item>
+        <item>1800</item>
+    </string-array>
+
+    <!-- Calorie Max Options -->
+    <string-array name="calorie_max_options">
+        <item>2000</item>
+        <item>2200</item>
+        <item>2400</item>
+        <item>2600</item>
+        <item>2800</item>
+    </string-array>
+
+    <!-- Prompts for Spinners -->
+    <string name="allergies_prompt">Select an allergy</string>
+    <string name="diets_prompt">Select a diet</string>
+    <string name="calorie_min_prompt">Select minimum calories</string>
+    <string name="calorie_max_prompt">Select maximum calories</string>
+
 </resources>

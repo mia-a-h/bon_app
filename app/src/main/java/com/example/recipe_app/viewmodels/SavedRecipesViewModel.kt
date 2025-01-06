@@ -23,6 +23,11 @@ class SavedRecipesViewModel : ViewModel() {
     // Public LiveData that fragments observe to display saved recipes
     val savedRecipes: LiveData<List<Recipe>> = _savedRecipes
     // Function to save a recipe
+
+    private val _selectedRecipe = MutableLiveData<Recipe?>()
+    val selectedRecipe: LiveData<Recipe?> get() = _selectedRecipe
+
+
     fun saveRecipe(recipe: Recipe) {
         recipeSaveService.saveRecipe(
             recipe,
@@ -34,6 +39,7 @@ class SavedRecipesViewModel : ViewModel() {
     // Function to load all saved recipes
     fun loadSavedRecipes() {
         recipeSaveService.getSavedRecipes(
+
             onSuccess = { _savedRecipes.value = it },   // On success, update _savedRecipes with the loaded recipes
             onFailure = { _saveStatus.value = false }        // On failure, set _saveStatus to false
 
@@ -50,5 +56,35 @@ class SavedRecipesViewModel : ViewModel() {
 //            }
 //        )
 //    }
+
+            onSuccess = { recipes ->
+                Log.d("SavedRecipesViewModel", "Fetched recipes: ${recipes.size} recipes")
+                _savedRecipes.value = recipes // Update LiveData
+                println("SAVED RECIPLES");
+                println(recipes.size);
+            },
+            onFailure = {
+                Log.e("SavedRecipesViewModel", "Failed to fetch saved recipes")
+                _savedRecipes.value = emptyList() // Handle failure gracefully
+            }
+        )
+    }
+
+
+    fun getRecipeById(recipeId: String) {
+        recipeSaveService.getRecipeById(
+            recipeId = recipeId,
+            onSuccess = { recipe ->
+                _selectedRecipe.value = recipe // Update LiveData with the fetched recipe
+            },
+            onFailure = { exception ->
+                Log.e("SavedRecipesViewModel", "Failed to fetch recipe by ID: ${exception.message}")
+                _selectedRecipe.value = null // Handle failure
+            }
+        )
+    }
+
+
+
 
 }

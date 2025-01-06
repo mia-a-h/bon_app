@@ -9,7 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+
 import android.widget.TextView
+
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -24,11 +26,13 @@ import com.example.recipe_app.adapter.InstructionsAdapter
 import com.example.recipe_app.adapter.NutrientAdapter
 import com.example.recipe_app.adapter.SubstituteAdapter
 import com.example.recipe_app.databinding.FragmentRecipeDetailsBinding
+
+import com.example.recipe_app.repository.RecipeRepository
+
 import com.example.recipe_app.viewmodels.SavedRecipesViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.example.recipe_app.dbprovider.RecipeDatabase
 import com.example.recipe_app.factory.RecipeViewModelFactory
-import com.example.recipe_app.repository.RecipeRepository
 import com.example.recipe_app.viewmodels.RecipeViewModel
 import com.example.recipe_app.viewmodels.SharedRecipeViewModel
 
@@ -38,12 +42,14 @@ class RecipeDetailsFragment : Fragment() {
     private var _binding: FragmentRecipeDetailsBinding? = null
     private val binding get() = _binding!!
 
+
     // Shared ViewModel for retrieving the current recipe
     private val sharedViewModel: SharedRecipeViewModel by activityViewModels()
 
 
     // SavedRecipesViewModel for saving the recipe
     private val savedRecipesViewModel: SavedRecipesViewModel by viewModels()
+
     private val recipeViewModel: RecipeViewModel by viewModels {
         val applicationContext = requireContext().applicationContext // Ensure it's non-null
         RecipeViewModelFactory(
@@ -70,10 +76,12 @@ class RecipeDetailsFragment : Fragment() {
         // 1) Observe saveStatus so we can show success/failure messages
         savedRecipesViewModel.saveStatus.observe(viewLifecycleOwner) { success ->
             if (success) {
-                Toast.makeText(context, "Recipe saved!", Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(context, "Recipe saved successfully!", Toast.LENGTH_SHORT).show()
                 binding.favoriteButton.isSelected = true
             } else {
-                Toast.makeText(context, "Failed to save recipe", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to save recipe.", Toast.LENGTH_SHORT).show()
+
             }
         }
 //        binding.favoriteButton.setOnClickListener {
@@ -108,9 +116,17 @@ class RecipeDetailsFragment : Fragment() {
 
             // *** Set the click listener here, where 'recipe' is in scope
             binding.favoriteButton.setOnClickListener {
+
                 // Call the instance's saveRecipe function
                 savedRecipesViewModel.saveRecipe(recipe)
 
+                val currentRecipe = sharedViewModel.selectedRecipe.value
+                if (currentRecipe != null) {
+                    savedRecipesViewModel.saveRecipe(currentRecipe)
+                } else {
+                    Toast.makeText(context, "No recipe selected", Toast.LENGTH_SHORT).show()
+
+                }
             recipe?.let {
                 // Update the UI with the recipe details
                 binding.recipeName.text = it.name
@@ -137,7 +153,7 @@ class RecipeDetailsFragment : Fragment() {
                     // Nutrition RecyclerView
                     nutritionList.layoutManager = LinearLayoutManager(context)
                     nutritionList.adapter = NutrientAdapter(it.nutrients)
-                }
+
 
                 Glide.with(this)
                     .load(it.image)
@@ -166,7 +182,7 @@ class RecipeDetailsFragment : Fragment() {
                 .into(binding.imageView)
         }
 
-        // Toggle nutrition list visibility + icon
+
         recipeViewModel.substitutes.observe(viewLifecycleOwner) { substitutesCache ->
             Log.d("RecipeDetailsFragment", "Observed Substitutes Cache: $substitutesCache")
             Log.d("RecipeDetailsFragment", "latest ingredient: $latestIngredientName")
