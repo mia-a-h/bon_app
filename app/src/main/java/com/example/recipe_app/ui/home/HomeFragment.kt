@@ -23,6 +23,7 @@ import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.databinding.FragmentHomeBinding
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.repository.RecipeRepository
+import com.example.recipe_app.viewmodels.SharedRecipeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
