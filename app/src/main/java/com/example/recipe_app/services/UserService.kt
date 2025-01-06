@@ -1,5 +1,5 @@
 // File: UserService.kt
-package com.example.recipe_app.ui.services
+package com.example.recipe_app.services
 
 import com.google.firebase.firestore.FirebaseFirestore
 

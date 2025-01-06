@@ -11,6 +11,8 @@ import com.example.recipe_app.utils.mapSearchToLocalRecipe
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.dao.RecipeDao
 import com.example.recipe_app.model.IngredientSub
+import com.example.recipe_app.model.SubstituteResponse
+import com.example.recipe_app.network.IngSubstituteResponse
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -47,19 +49,41 @@ class RecipeRepository(private val recipeDao: RecipeDao) : IRecipeRepository {
         }
     }
 
-    override suspend fun fetchSubstitutes(ingredient: String): List<IngredientSub> {
+    override suspend fun fetchSubstitutes(ingredient: String): IngSubstituteResponse? {
          try {
             val apiResponse = RetrofitClient.api.getIngredientSubs(
                 ingredient = ingredient,
                 apiKey = Constants.API_KEY
             )
-            return apiResponse.substitutes.map { mapToLocalSub(it) }
+             Log.d("RecipeRepository", "ingredient: $ingredient")
+             Log.d("RecipeRepository", "api reponse: ${apiResponse.ingredient}, ${apiResponse.substitutes}, ${apiResponse.message}")
+             return apiResponse
+                 //.map { mapToLocalSub(it) }
         } catch (e: Exception) {
             Log.e("RecipeRepository", "Error fetching substitutes", e)
-            return emptyList()
+            return null
         }
     }
 
+    override suspend fun fetchJoke(): String?{
+        try{
+            val apiResponse = RetrofitClient.api.getRandomJoke(apiKey = Constants.API_KEY)
+            return apiResponse.text
+        } catch (e: Exception){
+            Log.e("RecipeRepository", "Error fetching joke", e)
+            return null
+        }
+    }
+
+    override suspend fun fetchTrivia(): String?{
+        try{
+            val apiResponse = RetrofitClient.api.getRandomTrivia(apiKey = Constants.API_KEY)
+            return apiResponse.text
+        } catch (e: Exception){
+            Log.e("RecipeRepository", "Error fetching trivia", e)
+            return null
+        }
+    }
 
     override fun getFilteredRecipes(cuisineType: String, mealType: String): LiveData<List<Recipe>>{
         return if (cuisineType == "All" && mealType == "All") {

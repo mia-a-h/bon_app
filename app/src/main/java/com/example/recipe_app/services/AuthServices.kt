@@ -1,4 +1,4 @@
-package com.example.recipe_app.ui.services
+package com.example.recipe_app.services
     import com.google.firebase.auth.FirebaseAuth
     import com.google.firebase.auth.FirebaseUser
     class AuthServices {
