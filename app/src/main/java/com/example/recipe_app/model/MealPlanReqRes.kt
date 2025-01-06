@@ -3,16 +3,19 @@ package com.example.recipe_app.model
 import com.google.gson.annotations.SerializedName
 
 // Request Classes
+/*These classes
+represent the structure of the request
+the app sends to the API to generate a meal plan.*/
 data class MealPlanRequest(
     val size: Int,
     val plan: Plan
 )
 
 data class Plan(
-    val accept: Accept?,
-    val fit: Map<String, MinMax>?,
-    val exclude: List<String>?,
-    val sections: Map<String, SectionRequest>
+    val accept: Accept?,  // Specifies what to include in the plan
+    val fit: Map<String, MinMax>?,  // Nutritional constraints (e.g., calorie range)
+    val exclude: List<String>?, // Ingredients to exclude (e.g., allergies)
+    val sections: Map<String, SectionRequest>  // Different meal sections (e.g., breakfast, lunch, dinner)
 ){
     companion object {
         @SerializedName("SUGAR.added")
@@ -34,13 +37,16 @@ data class MinMax(
 
 data class SectionRequest(
     val accept: Accept?,
-    val fit: Map<String, MinMax>?
+    val fit: Map<String, MinMax>? // Nutritional constraints for this section
 )
 
 // Response Classes
-data class MealPlanResponse(
+/*These classes (MealPlanResponse, Selection, etc.)
+ represent the structure of the data
+ the app receives from the API after making a request.*/
+data class MealPlanResponse(   // Status of the response (e.g., "success")
     val status: String,
-    val selection: List<Selection>
+    val selection: List<Selection>  // The list of selected meal plans
 )
 
 data class Selection(
