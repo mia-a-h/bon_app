@@ -41,6 +41,7 @@ class RecipeSaveService {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val recipes = querySnapshot.toObjects(Recipe::class.java)
+                println("RecipeSaveService: Fetched ${recipes.size} saved recipes.")
                 onSuccess(recipes)
             }
             .addOnFailureListener { e ->
@@ -48,7 +49,33 @@ class RecipeSaveService {
                 onFailure()
             }
     }
+
+    fun getRecipeById(
+        recipeId: String,
+        onSuccess: (Recipe?) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        val firestore = FirebaseFirestore.getInstance()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+
+        firestore.collection("users")
+            .document(userId)
+            .collection("saved_recipes")
+            .document(recipeId)
+            .get()
+            .addOnSuccessListener { document ->
+                val recipe = document.toObject(Recipe::class.java)
+                onSuccess(recipe)
+            }
+            .addOnFailureListener { e ->
+                Log.e("RecipeSaveService", "Failed to fetch recipe by ID: ${e.message}", e)
+                onFailure(e)
+            }
+    }
 }
+
+
+
 
 
 //    fun saveRecipeForUser(

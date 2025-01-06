@@ -52,7 +52,7 @@
         tools:layout="@layout/fragment_meal_planning" >
 
     </fragment>
-    <fragment
+    <!-- <fragment
         android:id="@+id/edamamRecipeDetailsFragment"
         android:name="com.example.recipe_app.ui.mealplanning.EdamamRecipeDetailsFragment"
         android:label="Recipe Details"
@@ -61,5 +61,5 @@
     <action
         android:id="@+id/action_mealPlanningFragment_to_edamamRecipeDetailsFragment"
         app:destination="@id/edamamRecipeDetailsFragment" />
-    </fragment>
+    </fragment> -->
 </navigation>

@@ -1,8 +1,10 @@
 package com.example.recipe_app.utils
 
+import EdamamRecipe
 import android.util.Log
 import com.example.recipe_app.model.AnalyzedInstruction
 import com.example.recipe_app.model.ExtendedIngredient
+import com.example.recipe_app.model.Meal
 import com.example.recipe_app.model.Nutrient
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.model.SpoonacularRecipeResponse
@@ -54,7 +56,28 @@ fun mapToLocalRecipe(apiRecipe: SpoonacularRecipeResponse): Recipe {
         Log.e("RecipeMapper", "Error mapping recipe: ${e.message}")
         throw e
     }
+
+
 }
+
+
+fun mapMealToRecipe(meal: Meal): Recipe {
+    return Recipe(
+        id = null, // ID is auto-generated in Room, so set it as null or 0 for insertion
+        name = meal.recipe.name.orEmpty(),
+        cuisine = "",
+        mealType = meal.mealType,
+        summary = "Recipe from ${meal.recipe.source.orEmpty()}",
+        instructions = emptyList(), // Populate if instruction data is available
+        ingredients = emptyList(),  // Populate if ingredient data is available
+        nutrients = emptyList(),    // Populate nutrients if available
+        image = meal.recipe.image.orEmpty(),
+        time = meal.recipe.totalTime?.toInt(),
+        dietaryPreferences = "",
+        dietaryRestrictions = listOf()
+    )
+}
+
 
 
 //fun parseInstructions(instructionsHtml: String): List<String>{

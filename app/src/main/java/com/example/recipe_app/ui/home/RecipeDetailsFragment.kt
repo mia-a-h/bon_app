@@ -20,6 +20,7 @@ import com.example.recipe_app.adapter.IngredientsAdapter
 import com.example.recipe_app.adapter.InstructionsAdapter
 import com.example.recipe_app.adapter.NutrientAdapter
 import com.example.recipe_app.databinding.FragmentRecipeDetailsBinding
+import com.example.recipe_app.repository.RecipeRepository
 import com.example.recipe_app.viewmodels.SavedRecipesViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -27,6 +28,7 @@ class RecipeDetailsFragment : Fragment() {
 
     private var _binding: FragmentRecipeDetailsBinding? = null
     private val binding get() = _binding!!
+
 
     // Shared ViewModel for retrieving the current recipe
     private val sharedViewModel: SharedRecipeViewModel by activityViewModels()
@@ -48,10 +50,10 @@ class RecipeDetailsFragment : Fragment() {
         // 1) Observe saveStatus so we can show success/failure messages
         savedRecipesViewModel.saveStatus.observe(viewLifecycleOwner) { success ->
             if (success) {
-                Toast.makeText(context, "Recipe saved!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Recipe saved successfully!", Toast.LENGTH_SHORT).show()
                 binding.favoriteButton.isSelected = true
             } else {
-                Toast.makeText(context, "Failed to save recipe", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to save recipe.", Toast.LENGTH_SHORT).show()
             }
         }
 //        binding.favoriteButton.setOnClickListener {
@@ -85,9 +87,14 @@ class RecipeDetailsFragment : Fragment() {
 
             // *** Set the click listener here, where 'recipe' is in scope
             binding.favoriteButton.setOnClickListener {
-                // Call the instance's saveRecipe function
-                savedRecipesViewModel.saveRecipe(recipe)
+                val currentRecipe = sharedViewModel.selectedRecipe.value
+                if (currentRecipe != null) {
+                    savedRecipesViewModel.saveRecipe(currentRecipe)
+                } else {
+                    Toast.makeText(context, "No recipe selected", Toast.LENGTH_SHORT).show()
+                }
             }
+
 
             // Ingredients RecyclerView
             binding.ingredientsList.layoutManager = LinearLayoutManager(context)

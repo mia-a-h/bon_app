@@ -108,6 +108,8 @@ class HomeFragment : Fragment() {
     private fun initObservers(){
         // Observe the LiveData from your ViewModel and update the adapters
         recipeViewModel.recommendedRecipes.observe(viewLifecycleOwner) { recommendedRecipes ->
+            println("RECOMMENDED RECIPLES SIZE")
+            println(recommendedRecipes.size)
             recommendedAdapter.updateData(recommendedRecipes)
         }
 

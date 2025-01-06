@@ -44,7 +44,9 @@ class RecipeAdapter(private var recipes: List<Recipe>, private val onItemClicked
 
     fun updateData(newRecipes: List<Recipe>) {
         recipes = newRecipes
-        notifyDataSetChanged()  // Notify the adapter that the data has changed
+        notifyDataSetChanged()
+        println("RecipeAdapter: Updated with ${newRecipes.size} recipes")
     }
+
 
 }

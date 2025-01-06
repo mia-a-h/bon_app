@@ -1,39 +1,29 @@
 package com.example.recipe_app.ui.profile
 
-import android.app.DatePickerDialog
 import android.net.Uri
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Spinner
-import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.recipe_app.R
-import com.example.recipe_app.adapter.MealPlanAdapter
+import com.example.recipe_app.adapter.RecipeAdapter
 import com.example.recipe_app.databinding.FragmentProfileBinding
+import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.viewmodels.SavedRecipesViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
-import java.util.Calendar
 
 class ProfileFragment : Fragment() {
+
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
     private val viewModel: ProfileViewModel by viewModels()
-    private var profileImageUri: Uri? = null
-    private var isSavedRecipesVisible = false
     private val savedRecipesViewModel: SavedRecipesViewModel by viewModels()
+    private var profileImageUri: Uri? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,13 +35,13 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupObservers()
-        setupClickListeners()
+        setupProfileObservers()
         setupSavedRecipesRecyclerView()
-        viewModel.loadUserProfile()
+        setupClickListeners()
+        viewModel.loadUserProfile() // Load user profile data
     }
 
-    private fun setupObservers() {
+    private fun setupProfileObservers() {
         viewModel.profileData.observe(viewLifecycleOwner) { data ->
             binding.apply {
                 etFirstName.setText(data["firstName"] as? String ?: "")
@@ -78,14 +68,14 @@ class ProfileFragment : Fragment() {
 
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
             binding.profilebtn.isEnabled = !isLoading
-            // You might want to add a progress bar to show loading state
         }
     }
 
     private fun setupClickListeners() {
         binding.apply {
+            // Handle profile updates
             profilebtn.setOnClickListener {
-                val updates = hashMapOf<String, Any>(
+                val updates = hashMapOf(
                     "firstName" to etFirstName.text.toString().trim(),
                     "lastName" to etLastName.text.toString().trim(),
                     "birthday" to etBirthday.text.toString().trim(),
@@ -94,37 +84,39 @@ class ProfileFragment : Fragment() {
                 viewModel.updateProfile(updates, profileImageUri)
             }
 
+            // Handle showing saved recipes
             showSavedRecipesButton.setOnClickListener {
-                isSavedRecipesVisible = !isSavedRecipesVisible
-                binding.savedRecipesRecyclerView.visibility =
-                    if (isSavedRecipesVisible) View.VISIBLE else View.GONE
-                binding.showSavedRecipesButton.text =
-                    if (isSavedRecipesVisible) "Hide Saved Recipes" else "Show Saved Recipes"
-
-                if (isSavedRecipesVisible) {
-                    savedRecipesViewModel.loadSavedRecipes()
-                }
+                savedRecipesViewModel.loadSavedRecipes() // Fetch saved recipes
+                binding.savedRecipesRecyclerView.visibility = View.VISIBLE
+                showSavedRecipesButton.text = "Reload Saved Recipes" // Update button text
             }
 
+            // Optional: Add a hide button for better UX
+//            hideSavedRecipesButton.setOnClickListener {
+//                binding.savedRecipesRecyclerView.visibility = View.GONE
+//            }
         }
     }
+
     private fun setupSavedRecipesRecyclerView() {
-        val adapter = MealPlanAdapter(
-            onMealClick = { recipe ->
-                // Handle recipe click (navigate to details)
-            }
-        )
+        // Initialize the adapter for displaying saved recipes
+        val adapter = RecipeAdapter(emptyList()) { recipe ->
+            Toast.makeText(requireContext(), "Clicked on: ${recipe.name}", Toast.LENGTH_SHORT).show()
+        }
 
         binding.savedRecipesRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            this.adapter = adapter
+            layoutManager = LinearLayoutManager(context) // Vertical list
+            this.adapter = adapter // Attach adapter
         }
 
+        // Observe saved recipes LiveData and update the adapter
         savedRecipesViewModel.savedRecipes.observe(viewLifecycleOwner) { recipes ->
-            adapter.updateMeals(recipes)
+            println("ProfileFragment: Updating RecyclerView with ${recipes.size} recipes")
+            binding.savedRecipesRecyclerView.visibility = if (recipes.isEmpty()) View.GONE else View.VISIBLE
+            adapter.updateData(recipes) // Update RecyclerView with fetched recipes
         }
-
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

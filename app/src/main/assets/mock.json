@@ -1,0 +1,29 @@
+{
+  "meals": [
+    {
+      "day": "Monday",
+      "mealType": "Breakfast",
+      "recipe": {
+        "id": "recipe_123",
+        "name": "Oatmeal with Fruits",
+        "image": "https://example.com/images/oatmeal.jpg",
+        "source": "Healthy Recipes",
+        "url": "https://example.com/recipes/oatmeal",
+        "calories": 350.0,
+        "totalTime": 15
+      }
+    },
+    {
+      "day": "Monday",
+      "mealType": "Lunch",
+      "recipe": {
+        "id": "recipe_456",
+        "name": "Grilled Chicken Salad",
+        "image": "https://example.com/images/salad.jpg",
+        "source": "Delicious Meals",
+        "url": "https://example.com/recipes/salad",
+        "calories": 450.0,
+        "totalTime": 30
+      }
+    }]
+}
