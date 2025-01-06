@@ -46,11 +46,6 @@
         android:label="Shopping List"
         tools:layout="@layout/fragment_shopping_list" />
 
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.recipe_app.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/mealPlanningFragment"
@@ -59,6 +54,12 @@
         tools:layout="@layout/fragment_meal_planning" >
 
     </fragment>
+      <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.recipe_app.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/fragment_profile" />
+
     <!-- <fragment
         android:id="@+id/edamamRecipeDetailsFragment"
         android:name="com.example.recipe_app.ui.mealplanning.EdamamRecipeDetailsFragment"
@@ -69,5 +70,6 @@
         android:id="@+id/action_mealPlanningFragment_to_edamamRecipeDetailsFragment"
         app:destination="@id/edamamRecipeDetailsFragment" />
     </fragment> -->
+
 
 </navigation>
