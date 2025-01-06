@@ -41,7 +41,9 @@ class RecipeSaveService {
             .get()
             .addOnSuccessListener { querySnapshot ->
                 val recipes = querySnapshot.toObjects(Recipe::class.java)
+
                 println("RecipeSaveService: Fetched ${recipes.size} saved recipes.")
+
                 onSuccess(recipes)
             }
             .addOnFailureListener { e ->
@@ -49,6 +51,11 @@ class RecipeSaveService {
                 onFailure()
             }
     }
+
+}
+
+
+
 
     fun getRecipeById(
         recipeId: String,
@@ -73,6 +80,7 @@ class RecipeSaveService {
             }
     }
 }
+
 
 
 

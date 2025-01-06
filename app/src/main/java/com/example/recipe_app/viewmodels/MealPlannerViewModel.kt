@@ -28,7 +28,9 @@ class MealPlannerViewModel(
         viewModelScope.launch {
             try {
                 _loading.value = true
+
                 val response = apiService.getMealPlan(appId, appKey, listOf("public"),request)
+
                 handleResponse(response)
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error occurred"
