@@ -2,6 +2,7 @@ package com.example.recipe_app.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -19,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var etpassword: EditText
     private lateinit var tvForgotPassword: TextView
     private lateinit var createtxt: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)

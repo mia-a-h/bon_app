@@ -150,6 +150,14 @@
     <string name="your_feedback_helps_us_make_this_app_better">Your feedback helps us make this app better.</string>
     <string name="tell_us_anything">Tell us anything</string>
     <string name="submit">Submit</string>
+    <string name="wanna_hear_a_joke">Wanna hear a joke?</string>
+    <string name="joke_of_the_day">joke of the day</string>
+    <string name="joke">joke</string>
+    <string name="got_it">Got it!</string>
+    <string name="here_s_a_joke">Here\'s a Joke!</string>
+    <string name="here_s_one">Here\'s one!</string>
+    <string name="jktr">joke or trivia</string>
+    <string name="title_shoppinglist">Shopping List</string>
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>

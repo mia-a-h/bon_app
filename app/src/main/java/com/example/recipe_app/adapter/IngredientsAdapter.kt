@@ -8,20 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.recipe_app.R
 import com.example.recipe_app.model.ExtendedIngredient
 
-class IngredientsAdapter(private val ingredients: List<ExtendedIngredient>)
-//, private val onIngredientClick: (ExtendedIngredient) -> Unit)
+class IngredientsAdapter(private val ingredients: List<ExtendedIngredient>
+, private val onIngredientClick: (Int) -> Unit)
     : RecyclerView.Adapter<IngredientsAdapter.IngredientViewHolder>() {
-
     class IngredientViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val ingredientName: TextView = itemView.findViewById(R.id.ingredientName)
         val ingredientQuantity: TextView = itemView.findViewById(R.id.ingredientQuantity)
-
-//        fun bind(ingredient: ExtendedIngredient) {
-//            ingredientName.text = ingredient.nameClean
-//            itemView.setOnClickListener {
-//                onIngredientClick(ingredient)
-//            }
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IngredientViewHolder {
@@ -33,6 +25,10 @@ class IngredientsAdapter(private val ingredients: List<ExtendedIngredient>)
         val ingredient = ingredients[position]
         holder.ingredientName.text = ingredient.nameClean
         holder.ingredientQuantity.text = ingredient.amount.toString()
+
+        holder.itemView.setOnClickListener {
+            onIngredientClick(position)
+        }
     }
 
     override fun getItemCount(): Int = ingredients.size
