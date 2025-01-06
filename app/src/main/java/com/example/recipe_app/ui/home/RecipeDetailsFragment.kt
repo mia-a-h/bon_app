@@ -1,5 +1,6 @@
 package com.example.recipe_app.ui.home
 
+import ShoppingListViewModel
 import android.os.Bundle
 import android.text.Html
 import android.text.method.LinkMovementMethod
@@ -27,6 +28,7 @@ import com.example.recipe_app.dbprovider.RecipeDatabase
 import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.repository.RecipeRepository
 import com.example.recipe_app.viewmodels.RecipeViewModel
+import com.example.recipe_app.viewmodels.SharedRecipeViewModel
 
 class RecipeDetailsFragment : Fragment() {
 
@@ -41,6 +43,8 @@ class RecipeDetailsFragment : Fragment() {
             RecipeRepository(RecipeDatabase.getDatabase(applicationContext).recipeDao())
         )
     }
+
+    private val shoppingListViewModel: ShoppingListViewModel by activityViewModels()
 
     private var latestIngredientName: String = ""
 
@@ -124,7 +128,7 @@ class RecipeDetailsFragment : Fragment() {
         }
 
 
-        binding.shoppingBasketIcon.setOnClickListener {
+        binding.shoppingBasketFab.setOnClickListener {
             sharedViewModel.selectedRecipe.observe(viewLifecycleOwner) { recipe ->
                 recipe?.let {
                     val dialogView = layoutInflater.inflate(R.layout.shopping_list_dialog, null)
@@ -151,9 +155,14 @@ class RecipeDetailsFragment : Fragment() {
                     }
 
                     addToShoppingListPageButton.setOnClickListener {
+                        shoppingListViewModel.saveShoppingList(recipe)
+
+                        // Show success message
                         Toast.makeText(requireContext(), "Shopping list added!", Toast.LENGTH_SHORT).show()
+
                         dialog.dismiss()
                     }
+
 
                     dialog.show()
 

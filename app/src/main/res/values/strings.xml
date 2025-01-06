@@ -157,6 +157,7 @@
     <string name="here_s_a_joke">Here\'s a Joke!</string>
     <string name="here_s_one">Here\'s one!</string>
     <string name="jktr">joke or trivia</string>
+    <string name="title_shoppinglist">Shopping List</string>
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>
