@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.recipe_app.network.EdamamApiService
 import com.example.recipe_app.model.MealPlanRequest
 import com.example.recipe_app.model.MealPlanResponse
+import com.example.recipe_app.model.MealPlanResponses
 import com.example.recipe_app.model.Plan
 import com.example.recipe_app.model.Recipe
 import com.example.recipe_app.network.EdamamRetrofitClient
@@ -14,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class MealPlanningViewModel : ViewModel() {
     private val edamamApiService: EdamamApiService = EdamamRetrofitClient.api
-        private val appId = "app_id"
+    private val appId = "app_id"
     private val appKey = "app_key"
 
     private val _meals = MutableLiveData<List<Recipe>>()
@@ -36,9 +37,7 @@ class MealPlanningViewModel : ViewModel() {
             }
         }
     }
-
-
-
+    
     private val _planningStatus = MutableLiveData<Boolean>()
     val planningStatus: LiveData<Boolean> = _planningStatus
 
