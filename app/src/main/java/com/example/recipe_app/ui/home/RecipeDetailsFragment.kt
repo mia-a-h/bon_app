@@ -28,6 +28,7 @@ import com.example.recipe_app.dbprovider.RecipeDatabase
 import com.example.recipe_app.factory.RecipeViewModelFactory
 import com.example.recipe_app.repository.RecipeRepository
 import com.example.recipe_app.viewmodels.RecipeViewModel
+import com.example.recipe_app.viewmodels.SavedRecipesViewModel
 import com.example.recipe_app.viewmodels.SharedRecipeViewModel
 
 class RecipeDetailsFragment : Fragment() {
@@ -36,6 +37,8 @@ class RecipeDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val sharedViewModel: SharedRecipeViewModel by activityViewModels()
+
+    private val savedRecipesViewModel: SavedRecipesViewModel by viewModels()
 
     private val recipeViewModel: RecipeViewModel by viewModels {
         val applicationContext = requireContext().applicationContext // Ensure it's non-null
@@ -127,6 +130,25 @@ class RecipeDetailsFragment : Fragment() {
             }
         }
 
+        savedRecipesViewModel.saveStatus.observe(viewLifecycleOwner) { success ->
+            if (success) {
+                Toast.makeText(context, "Recipe saved successfully!", Toast.LENGTH_SHORT).show()
+                binding.favoriteButton.isSelected = true
+            } else {
+                Toast.makeText(context, "Failed to save recipe.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        // *** Set the click listener here, where 'recipe' is in scope
+        binding.favoriteButton.setOnClickListener {
+            val currentRecipe = sharedViewModel.selectedRecipe.value
+            if (currentRecipe != null) {
+                savedRecipesViewModel.saveRecipe(currentRecipe)
+            } else {
+                Toast.makeText(context, "No recipe selected", Toast.LENGTH_SHORT).show()
+            }
+        }
 
         binding.shoppingBasketFab.setOnClickListener {
             sharedViewModel.selectedRecipe.observe(viewLifecycleOwner) { recipe ->
